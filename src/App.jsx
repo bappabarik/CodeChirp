@@ -1,5 +1,4 @@
-import LoginPage from "./app/login/page.jsx"
-import HomePage from "./app/home/page.jsx"
+import { Outlet } from "react-router-dom"
 
 
 
@@ -7,8 +6,7 @@ function App() {
 
   return (
     <>
-      {/* <HomePage /> */}
-      <LoginPage />
+      <Outlet />
     </>
   )
 }

@@ -5,8 +5,11 @@ import { Github } from "lucide-react"
 import logo from '../../assets/logo.svg'
 import { BsTwitterX } from "react-icons/bs";
 import { BsLinkedin } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
+  const navigate = useNavigate()
+
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden flex justify-center items-center">
       <div
@@ -35,7 +38,9 @@ function HomePage() {
             your code on GitHub, and let AI generate the perfect post for you!
           </p>
 
-          <Button size="lg" className="mb-16 border-slate-500 hover:border-[1px] transition-all duration-200">
+          <Button 
+            onClick = {() => navigate("/login")}
+          size="lg" className="mb-16 border-slate-500 hover:border-[1px] transition-all duration-200">
             Get Started
           </Button>
 
