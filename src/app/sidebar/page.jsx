@@ -76,14 +76,14 @@ export function SidebarNavigationMenu() {
         // for your use case, use `h-screen` instead of `h-[60vh]`
         "h-screen"
       )}>
-        <div className={`absolute left-64 ${!open && 'hidden'} z-10`}>
+        {/* <div className={`absolute left-64 ${!open && 'hidden'} z-10`}>
           <div className="flex gap-2">
             <img src={arrow} alt="" width="80" className=" rotate-[185deg] opacity-50" />
             <div className="bg-white text-black p-4 rounded-lg w-60 relative top-12">
             Install the GitHub App, this will track your github events to generate post accordingly!
             </div>
           </div>
-        </div>
+        </div> */}
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
@@ -126,12 +126,12 @@ export const Logo = () => {
         animate={{ opacity: 1 }}
         className="font-medium text-black dark:text-white whitespace-pre">
         CodeChirp AI 
-        {"  "}
+        {/* {"  "}
         <a
             href='https://github.com/apps/codechirp/installations/select_target'
             className="mb-16 border-slate-500 hover:border-[1px] transition-all duration-200 bg-green-700 px-4 py-1 rounded-md">
             Install
-        </a>
+        </a> */}
       </motion.span>
     </Link>)
   );
