@@ -39,7 +39,7 @@ function HomePage() {
           </p>
 
           <Button 
-            onClick = {() => navigate("/login")}
+            onClick = {() => navigate("/dashboard")}
           size="lg" className="mb-16 border-slate-500 hover:border-[1px] transition-all duration-200">
             Get Started
           </Button>

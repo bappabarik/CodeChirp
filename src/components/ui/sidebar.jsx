@@ -1,11 +1,9 @@
 "use client";;
 import { cn } from "@/lib/utils";
-// import Link from "next/link";
 import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlignJustify, X } from "lucide-react";
-import { Link } from "react-router-dom";
-// import { IconMenu2, IconX } from "@tabler/icons-react";
+import { Link, useNavigate } from "react-router-dom";
 
 const SidebarContext = createContext(undefined);
 
@@ -128,8 +126,18 @@ export const SidebarLink = ({
   ...props
 }) => {
   const { open, animate } = useSidebar();
+  const navigate = useNavigate()
+
+  const handleClick = (e) => {
+    if(link.onClick){
+      e.preventDefault();
+      link.onClick()
+      navigate("/login")
+    }
+  }
   return (
     (<Link
+      onClick={handleClick}
       to={link.href}
       className={cn("flex items-center justify-start gap-2  group/sidebar py-2", className)}
       {...props}>

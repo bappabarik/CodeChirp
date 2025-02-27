@@ -1,13 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import HomePage from './app/home/page'
-import LoginPage from './app/login/page'
-import { Dashboard, SidebarNavigationMenu } from './app/sidebar/page'
-import Sidebar2List from './components/sidebar2List'
-
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import "./index.css";
+import App from "./App.jsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import HomePage from "./app/home/page";
+import LoginPage from "./app/login/page";
+import { SidebarNavigationMenu } from "./app/sidebar/page";
+import Sidebar2List from "./components/sidebar2List";
+import { Provider } from "react-redux";
+import store from "./store/store";
+import Installation from "./app/installation/page";
+import { AuthLayout } from "./components";
 
 const router = createBrowserRouter([
   {
@@ -15,33 +18,63 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-          path: "/",
-          element: <HomePage />,
+        path: "/",
+        element: <HomePage />,
       },
       {
         path: "/login",
-        element: <LoginPage />,
+        element: (
+          <AuthLayout authentication={false}>
+            <LoginPage />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/installation",
+        element: (
+          <AuthLayout authentication>
+            {" "}
+            <Installation />
+          </AuthLayout>
+        ),
       },
       {
         path: "/dashboard",
-        element: <SidebarNavigationMenu />,
-        children : [
+        element: (
+          <AuthLayout authentication>
+            {" "}
+            <SidebarNavigationMenu />
+          </AuthLayout>
+        ),
+        children: [
           {
-            path: "/dashboard",
-            element: <Dashboard />
+            path: "",
+            element: (
+              <AuthLayout authentication>
+                {" "}
+                <Installation />
+              </AuthLayout>
+            ),
           },
           {
             path: "/dashboard/profile",
-            element: <Sidebar2List />
-          }
-        ]
-      }
-    ]
-  }
-])
+            element: (
+              <AuthLayout authentication>
+                {" "}
+                <Sidebar2List />
+              </AuthLayout>
+            ),
+          },
+        ],
+      },
+    ],
+  },
+]);
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <RouterProvider router={router}/>
-  </StrictMode>,
-)
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </React.StrictMode>
+);

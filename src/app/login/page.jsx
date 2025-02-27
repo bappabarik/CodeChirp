@@ -6,10 +6,10 @@ import codechirpWaterMark from "../../assets/CodeChirp.png"
 import { ImGithub } from "react-icons/im";
 import { VscRepoPush } from "react-icons/vsc";
 import { RiRobot2Fill } from "react-icons/ri";
-import { useState, useEffect } from "react";
 import AnimatedBeam from "@/components/ui/animatedBeam";
 
 export default function LoginPage() {
+
 
   return (
     (<div className="grid min-h-svh lg:grid-cols-2 bg-black relative z-10">
