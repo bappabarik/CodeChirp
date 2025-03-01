@@ -40,8 +40,8 @@ export class AuthService {
                 await this.account.updatePrefs({'avatar': avatarURL})
             }
 
-            const session = await this.account.getSession('current');
-            console.log(session);
+            // const session = await this.account.getSession('current');
+            // console.log(session);
             
             return await this.account.get()
         } catch (error) {
