@@ -68,9 +68,7 @@ export function SidebarNavigationMenu() {
   ];
   const [open, setOpen] = useState(false);
   const userData = useSelector(state => state.auth.userData)
-  // console.log(userData);
-  
-  
+
   return (
     <div
       className={cn(
