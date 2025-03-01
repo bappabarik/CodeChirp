@@ -39,9 +39,6 @@ export class AuthService {
                 const avatarURL = `https://avatars.githubusercontent.com/u/${session.providerUid}`
                 await this.account.updatePrefs({'avatar': avatarURL})
             }
-
-            // const session = await this.account.getSession('current');
-            // console.log(session);
             
             return await this.account.get()
         } catch (error) {
