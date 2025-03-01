@@ -1,13 +1,12 @@
 import React from 'react';
 import logo from '../../assets/logo.svg'
 import { Github } from 'lucide-react';
+import { Container } from '@/components';
 
 const Installation = () => {
 
     return (
-      <div className="flex flex-1">
-      <div
-        className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+      <Container>
         <div className="h-full bg-black text-white relative overflow-hidden flex justify-center items-center">
       <div
         className="absolute inset-0 pointer-events-none"
@@ -46,8 +45,7 @@ const Installation = () => {
         <Github className="w-12 h-12" />
       </div>
     </div>
-    </div>
-    </div>
+    </Container>
     );
 }
 
