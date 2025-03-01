@@ -21,8 +21,6 @@ function App() {
       authService.getCurrentUser()
         .then((userData) => {
           if (userData) {
-            console.log(userData);
-            
             dispatch(login(userData));
             localStorage.setItem("user", JSON.stringify(userData)); // Cache user
             setLoading(false)

@@ -39,8 +39,11 @@ export class AuthService {
                 const avatarURL = `https://avatars.githubusercontent.com/u/${session.providerUid}`
                 await this.account.updatePrefs({'avatar': avatarURL})
             }
+            const session = await this.account.getSession('current')
+            const user = await this.account.get()
+            user.targets[0].providerId = session.providerUid
+            return user
             
-            return await this.account.get()
         } catch (error) {
             console.log("AuthService :: getCurrentUser :: ", error); 
         }
@@ -54,51 +57,6 @@ export class AuthService {
         }
     }
 
-    // async  checkGitHubAppInstallation(providerAccessToken) {
-    //     try {
-    //         const response = await fetch("https://api.github.com/user/installations", {
-    //           method: "GET",
-    //           headers: {
-    //             Authorization: `Bearer ${providerAccessToken}`,
-    //             Accept: "application/vnd.github+json"
-    //           }
-    //         });
-          
-    //         const data = await response.json();
-          
-    //         if (response.ok) {
-    //           console.log("User's installed GitHub apps:", data);
-    //           return data.total_count > 0 ? data.installations : null;
-    //         } else {
-    //           console.error("Error checking installation:", data);
-    //           return null;
-    //         }
-    //     } catch (error) {
-    //         console.log("ERROR :: checkGitHubAppInstallation ::", error);
-            
-    //     }
-    //   }
-
-    //   async isAppInstalled() {
-    //     try {
-    //         const session = await this.account.getSession('current')
-    //         const providerAccessToken = session.providerAccessToken
-    //         const installations = await this.checkGitHubAppInstallation(providerAccessToken);
-          
-    //         if (!installations) {
-    //           console.log("No GitHub apps installed.");
-    //           return false;
-    //         }
-          
-    //         const isInstalled = installations.some(install => install.account.login === 'CodeChirp');
-          
-    //         console.log(`Is CodeChirp installed?`, isInstalled);
-    //         return isInstalled;
-    //     } catch (error) {
-    //         console.log("ERROR :: isAppInstalled ::", error);
-    //     }
-    //   }
-      
       
     
 }
