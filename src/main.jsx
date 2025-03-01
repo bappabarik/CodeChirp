@@ -57,6 +57,24 @@ const router = createBrowserRouter([
             ),
           },
           {
+            path: "/dashboard/linkedin-posts",
+            element: (
+              <AuthLayout authentication>
+                {" "}
+                <Sidebar2List />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: "/dashboard/tweets",
+            element: (
+              <AuthLayout authentication>
+                {" "}
+                <Sidebar2List />
+              </AuthLayout>
+            ),
+          },
+          {
             path: "/dashboard/profile",
             element: (
               <AuthLayout authentication>
