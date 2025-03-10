@@ -1,9 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from '../../assets/logo.svg'
 import { Github } from 'lucide-react';
 import { Container } from '@/components';
+import { useNavigate } from 'react-router-dom';
+import dbService from '@/appwrite/db';
+import { useSelector } from 'react-redux';
 
 const Installation = () => {
+    const queryParameters = new URLSearchParams(window.location.search)
+    const installationID = queryParameters.get("installation_id")
+    const navigate = useNavigate()
+    const userData = useSelector(state => state.auth.userData)
+
+    useEffect(() => {
+      console.log(userData.targets[0].providerId, installationID);
+      
+      dbService.getGithubAppData(userData.targets[0].providerId)
+      .then(isInstalled => {
+        console.log(isInstalled);
+        
+      if (!isInstalled) {
+        if (installationID && userData.targets[0].providerId) {
+        dbService.storeGithubAppData(userData.targets[0].providerId, {installationID})
+        .then(data => {
+          if (data) {
+            console.log(response);
+            navigate("/dashboard")
+          }
+        })
+      }
+      } else {
+        console.log(true);
+        
+          navigate("/dashboard")
+      }
+    })
+
+    }, []);
 
     return (
       <Container>
