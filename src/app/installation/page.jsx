@@ -13,28 +13,24 @@ const Installation = () => {
     const userData = useSelector(state => state.auth.userData)
 
     useEffect(() => {
-      console.log(userData.targets[0].providerId, installationID);
       
       dbService.getGithubAppData(userData.targets[0].providerId)
       .then(isInstalled => {
-        console.log(isInstalled);
-        
-      if (!isInstalled) {
-        if (installationID && userData.targets[0].providerId) {
-        dbService.storeGithubAppData(userData.targets[0].providerId, {installationID})
-        .then(data => {
-          if (data) {
-            console.log(response);
+
+        if (!isInstalled) {
+          if (installationID && userData.targets[0].providerId) {
+          dbService.storeGithubAppData(userData.targets[0].providerId, {installationID})
+          .then(data => {
+            if (data) {
+              console.log(response);
+              navigate("/dashboard")
+            }
+          })
+        }
+        } else {
             navigate("/dashboard")
-          }
-        })
-      }
-      } else {
-        console.log(true);
-        
-          navigate("/dashboard")
-      }
-    })
+        }
+      })
 
     }, []);
 

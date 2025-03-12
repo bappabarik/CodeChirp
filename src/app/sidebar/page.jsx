@@ -6,12 +6,13 @@ import { cn } from "@/lib/utils";
 import { MoveLeft, Settings, SquareTerminal, UserRound } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 import logo from "../../assets/logo.svg"
-import arrow from "../../assets/arrow.svg"
+// import arrow from "../../assets/arrow.svg"
 import { useDispatch, useSelector } from "react-redux";
 import authService from "@/appwrite/auth";
 import { logout } from "@/store/authSlice";
 import { BsTwitterX } from "react-icons/bs";
 import { BsLinkedin } from "react-icons/bs";
+import { RiDraftFill } from "react-icons/ri";
 
 
 export function SidebarNavigationMenu() {
@@ -44,6 +45,13 @@ export function SidebarNavigationMenu() {
       ),
     },
     {
+      label: "Drafts",
+      href: "/dashboard/drafts",
+      icon: (
+        <RiDraftFill className="text-neutral-700 dark:text-neutral-200 flex-shrink-0 h-5 w-5" />
+      ),
+    },
+    {
       label: "Profile",
       href: "/dashboard/profile",
       icon: (
@@ -52,7 +60,7 @@ export function SidebarNavigationMenu() {
     },
     {
       label: "Settings",
-      href: "#",
+      href: "/dashboard/settings",
       icon: (
         <Settings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -149,27 +157,14 @@ export const LogoIcon = () => {
 };
 
 // Dummy dashboard component with content
-export const Dashboard = () => {
+// export const Dashboard = () => {
 
-  return (
-    (<div className="flex flex-1">
-      <div
-        className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
-        {/* <div className="flex gap-2">
-          {[...new Array(4)].map((i) => (
-            <div
-              key={"first-array" + i}
-              className="h-20 w-full rounded-lg  bg-gray-100 dark:bg-neutral-800 animate-pulse"></div>
-          ))}
-        </div>
-        <div className="flex gap-2 flex-1">
-          {[...new Array(2)].map((i) => (
-            <div
-              key={"second-array" + i}
-              className="h-full w-full rounded-lg  bg-gray-100 dark:bg-neutral-800 animate-pulse"></div>
-          ))}
-        </div> */}
-      </div>
-    </div>)
-  );
-};
+//   return (
+//     (<div className="flex flex-1">
+//       <div
+//         className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+        
+//       </div>
+//     </div>)
+//   );
+// };

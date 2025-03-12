@@ -11,6 +11,12 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import Installation from "./app/installation/page";
 import { AuthLayout } from "./components";
+import Dashboard from './app/dashboard/page';
+import LinkedIn from './app/linkedin/page';
+import Tweets from './app/tweets/page';
+import Profile from './app/profile/page';
+import Settings from './app/settings/page';
+import Draft from './app/draft/page';
 
 const router = createBrowserRouter([
   {
@@ -52,7 +58,7 @@ const router = createBrowserRouter([
             element: (
               <AuthLayout authentication>
                 {" "}
-                <Installation />
+                <Dashboard />
               </AuthLayout>
             ),
           },
@@ -61,7 +67,7 @@ const router = createBrowserRouter([
             element: (
               <AuthLayout authentication>
                 {" "}
-                <Sidebar2List />
+                <LinkedIn />
               </AuthLayout>
             ),
           },
@@ -70,7 +76,16 @@ const router = createBrowserRouter([
             element: (
               <AuthLayout authentication>
                 {" "}
-                <Sidebar2List />
+                <Tweets />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: "/dashboard/drafts",
+            element: (
+              <AuthLayout authentication>
+                {" "}
+                <Draft />
               </AuthLayout>
             ),
           },
@@ -79,7 +94,16 @@ const router = createBrowserRouter([
             element: (
               <AuthLayout authentication>
                 {" "}
-                <Sidebar2List />
+                <Profile />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: "/dashboard/settings",
+            element: (
+              <AuthLayout authentication>
+                {" "}
+                <Settings />
               </AuthLayout>
             ),
           },

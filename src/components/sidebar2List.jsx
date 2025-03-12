@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Container } from '.';
 
 const Sidebar2List = () => {
     const [items, setItems] = useState([
@@ -85,7 +84,7 @@ const Sidebar2List = () => {
         },
       ]) 
     return (
-           <Container>
+      <>
             {items.map((mail) => (
                 <a
                   href="#"
@@ -102,7 +101,7 @@ const Sidebar2List = () => {
                   </span>
                 </a>
               ))}
-        </Container>
+      </>
     );
 }
 

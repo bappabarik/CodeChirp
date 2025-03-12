@@ -16,7 +16,6 @@ function App() {
       // If user exists in localStorage, use it instead of calling Appwrite API
       dispatch(login(cachedUser));
       setLoading(false);
-      console.log(cachedUser);
       
     } else {
       // If no user found, fetch from Appwrite
