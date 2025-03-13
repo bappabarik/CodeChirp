@@ -40,6 +40,31 @@ export class DbService{
             return null;
         }
     }
+
+    async getPost(slug){
+        try {
+            return await this.databases.getDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                slug
+            )
+        } catch (error) {
+            console.log("Appwrite service :: getPost :: error", error);
+            return false
+        }
+    }
+
+    async getPosts(){
+        try {
+            return await this.databases.listDocuments(
+                conf.appwriteDatabaseId,
+                conf.appwritePostCollectionId,
+            )
+        } catch (error) {
+            console.log("Appwrite service :: getPosts :: error", error);
+            return false;
+        }
+    }
 }
 
 const dbService = new DbService()
