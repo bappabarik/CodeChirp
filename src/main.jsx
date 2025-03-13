@@ -17,6 +17,7 @@ import Tweets from './app/tweets/page';
 import Profile from './app/profile/page';
 import Settings from './app/settings/page';
 import Draft from './app/draft/page';
+import Post from './app/post/page';
 
 const router = createBrowserRouter([
   {
@@ -104,6 +105,15 @@ const router = createBrowserRouter([
               <AuthLayout authentication>
                 {" "}
                 <Settings />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: "/dashboard/post/:slug",
+            element: (
+              <AuthLayout authentication>
+                {" "}
+                <Post />
               </AuthLayout>
             ),
           },
