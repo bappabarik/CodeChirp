@@ -51,13 +51,13 @@ export function SidebarNavigationMenu() {
         <RiDraftFill className="text-neutral-700 dark:text-neutral-200 flex-shrink-0 h-5 w-5" />
       ),
     },
-    {
-      label: "Profile",
-      href: "/dashboard/profile",
-      icon: (
-        <UserRound className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
+    // {
+    //   label: "Profile",
+    //   href: "/dashboard/profile",
+    //   icon: (
+    //     <UserRound className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+    //   ),
+    // },
     {
       label: "Settings",
       href: "/dashboard/settings",
@@ -81,7 +81,6 @@ export function SidebarNavigationMenu() {
     <div
       className={cn(
         "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 flex-1 w-full border border-neutral-200 dark:border-neutral-700 md:overflow-hidden relative",
-        // for your use case, use `h-screen` instead of `h-[60vh]`
         "h-screen"
       )}>
         {/* <div className={`absolute left-64 ${!open && 'hidden'} z-10`}>
@@ -106,7 +105,7 @@ export function SidebarNavigationMenu() {
             <SidebarLink
               link={{
                 label: userData?.name,
-                href: "#",
+                href: "/dashboard/profile",
                 icon: (
                   <img
                     src={userData?.prefs.avatar}

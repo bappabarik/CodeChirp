@@ -54,12 +54,20 @@ export class DbService{
         }
     }
 
-    async getPosts(){
+    async getPosts(providerId, app, cursor = null){
         try {
+            const queries = [
+                Query.orderDesc('$createdAt'),
+                Query.equal("providerID", providerId),
+                Query.equal("app", app),
+                Query.limit(10)
+            ]
+            if (cursor) queries.push(Query.cursorAfter(cursor))
+
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwritePostCollectionId,
-                [Query.orderDesc('$createdAt')]
+                queries
             )
         } catch (error) {
             console.log("Appwrite service :: getPosts :: error", error);

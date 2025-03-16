@@ -14,8 +14,9 @@ const Installation = () => {
 
     useEffect(() => {
       
-      dbService.getGithubAppData(userData.targets[0].providerId)
-      .then(isInstalled => {
+      if (userData) {
+        dbService.getGithubAppData(userData.targets[0].providerId)
+        .then(isInstalled => {
 
         if (!isInstalled) {
           if (installationID && userData.targets[0].providerId) {
@@ -26,13 +27,19 @@ const Installation = () => {
               navigate("/dashboard")
             }
           })
+          .catch(error => {
+            console.log(error);
+            navigate("/dashboard")
+            
+          } )
         }
         } else {
             navigate("/dashboard")
         }
       })
 
-    }, []);
+      }
+    }, [userData]);
 
     return (
       <Container>
