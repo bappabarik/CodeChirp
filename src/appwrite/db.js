@@ -77,12 +77,12 @@ export class DbService{
         }
     }
 
-    subscribeToPosts(providerId, app, callback){
+    subscribeToPosts(providerId, App, callback){
         this.subscription = this.client.subscribe(`databases.${conf.appwriteDatabaseId}.collections.${conf.appwritePostCollectionId}.documents`, response => {
             // console.log("Realtime Update:", response);
             if (response.events.includes("databases.*.collections.*.documents.*.create")) {
                 const {providerID, app} = response.payload
-                if (providerID === providerId && app === app) {
+                if (providerID === providerId && app === App) {
                     callback(response.payload);
                 } else {
                     callback(null)
