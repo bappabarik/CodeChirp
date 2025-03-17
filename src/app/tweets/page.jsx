@@ -1,50 +1,62 @@
 import dbService from '@/appwrite/db';
 import { Container, Sidebar2List } from '@/components';
+import { addXPosts, prependXPosts } from '@/store/postSlice';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Tweets = () => {
-    const [items, setItems ] = useState([]) 
     const [ hasMore, setHasMore ] = useState(true) 
     const [ loading, setLoading ] = useState(true) 
     const userData = useSelector(state => state.auth.userData)
+    const xPosts = useSelector(state => state.posts.xPosts)
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        if (userData) {        
-            dbService.getPosts(userData.targets[0].providerId, "X")
+        if (userData && xPosts.length === 0) {        
+            dbService.getPosts(userData.targets[0].providerId, "X", 10)
             .then(data => {
                 setLoading(false)
-                setItems(data.documents)
+                dispatch(addXPosts(data.documents))
             })
             .catch(error => {
                 console.log(error);
                 setLoading(false)
             })
+        } else {
+            setLoading(false)
         }
     }, []);
 
+    useEffect(() => {
+        dbService.subscribeToPosts(userData.targets[0].providerId, "X", (newPost) => {
+            if (newPost) {
+                dispatch(prependXPosts([newPost]))
+            }
+            // console.log(newPost);
+        })
+        return () => {
+            dbService.unsubscribe()
+        };
+    }, [dispatch]);
+
     const fetchData = () => {
-        console.log("called");
-        
-        if (userData && items) { 
-            const cursor  = items[items.length - 1].$id
-            dbService.getPosts(userData.targets[0].providerId, "X", cursor)
+            const cursor  = xPosts[xPosts.length - 1].$id
+            dbService.getPosts(userData.targets[0].providerId, "X", 10, cursor)
             .then(data => {
-                console.log(data);
                 if (data.documents.length === 0) {
                     setHasMore(false);
                   } else {
-                    setItems((prevItems) => [...prevItems, ...data.documents]); 
+                    dispatch(addXPosts(data.documents))
                   }
             })
             .catch(error => {
                 console.log(error);
             })
-        }
     }
+
     return (
         <Container>
-            <Sidebar2List items={items} fetchData={fetchData} loading={loading} hasMore={hasMore}/>
+            <Sidebar2List items={xPosts} fetchData={fetchData} loading={loading} hasMore={hasMore}/>
         </Container>
     );
 }

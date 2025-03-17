@@ -1,22 +1,14 @@
 import formatDateTime from '@/util/formatDateTime';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link } from 'react-router-dom';
 import Loader from './ui/loader';
 
 const Sidebar2List = ({items, fetchData, loading, hasMore}) => {
-  //  useEffect(() => {
-  //   items?.map(post => {
-  //     console.log(post);
-  //   })
-
-  //   console.log(loading);
-    
-  //  }, [items]);
    
 
     return (
-      <div className='overflow-auto h-full w-full md:mb-0 mb-10 md:pr-10'>
+      <div className=' overflow-auto h-full w-full md:mb-0 mb-10 md:pr-10'>
         { 
           !loading ?  (
             items.length !== 0  ? (
@@ -27,8 +19,8 @@ const Sidebar2List = ({items, fetchData, loading, hasMore}) => {
             loader={<Loader />}
             height={items.length >= 10 && 800}
             endMessage={
-              <p className=' text-center mt-3 text-slate-300'>
-                <b>You have seen it all</b>
+              <p className=' text-center m-3 text-slate-300'>
+                You have seen it all
               </p>
             }
           >

@@ -4,7 +4,7 @@ import React from 'react';
 const Draft = () => {
     return (
         <Container>
-            <Sidebar2List />
+            <Sidebar2List items={[]}/>
         </Container>
     );
 }

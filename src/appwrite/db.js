@@ -4,12 +4,14 @@ import { Client, Databases, Query } from "appwrite";
 export class DbService{
     client = new Client();
     databases;
+    subscription;
     constructor(){
         this.client
             .setEndpoint(conf.appwriteUrl)
             .setProject(conf.appwriteProjectId);
 
         this.databases = new Databases(this.client)
+        this.subscription = null;
     }
 
     async storeGithubAppData(providerId, {installationID}){
@@ -54,14 +56,14 @@ export class DbService{
         }
     }
 
-    async getPosts(providerId, app, cursor = null){
+    async getPosts(providerId, app, limit = null, cursor = null){
         try {
             const queries = [
                 Query.orderDesc('$createdAt'),
                 Query.equal("providerID", providerId),
                 Query.equal("app", app),
-                Query.limit(10)
             ]
+            if (limit) queries.push(Query.limit(10))
             if (cursor) queries.push(Query.cursorAfter(cursor))
 
             return await this.databases.listDocuments(
@@ -74,6 +76,27 @@ export class DbService{
             return false;
         }
     }
+
+    subscribeToPosts(providerId, app, callback){
+        this.subscription = this.client.subscribe(`databases.${conf.appwriteDatabaseId}.collections.${conf.appwritePostCollectionId}.documents`, response => {
+            // console.log("Realtime Update:", response);
+            if (response.events.includes("databases.*.collections.*.documents.*.create")) {
+                const {providerID, app} = response.payload
+                if (providerID === providerId && app === app) {
+                    callback(response.payload);
+                } else {
+                    callback(null)
+                }
+            }
+        });
+    }
+
+    unsubscribe() {
+        if (this.subscription) {
+          this.subscription();
+        }
+    }
+
 }
 
 const dbService = new DbService()
