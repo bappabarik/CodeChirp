@@ -4,6 +4,7 @@ import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlignJustify, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { Logo } from "@/app/sidebar/page";
 
 const SidebarContext = createContext(undefined);
 
@@ -88,6 +89,7 @@ export const MobileSidebar = ({
         "h-10 px-4 py-4 fixed top-0 flex flex-row md:hidden  items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full z-20"
       )}
       {...props}>
+      <Logo width={100} />
       <div className="flex justify-end z-20 w-full">
         <AlignJustify
           className="text-neutral-800 dark:text-neutral-200"

@@ -122,12 +122,12 @@ export function SidebarNavigationMenu() {
     </div>
   );
 }
-export const Logo = () => {
+export const Logo = ({width = 50}) => {
   return (
     (<Link
       to={"/"}
       className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
-      <LogoIcon />
+      <LogoIcon width={width} />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -143,13 +143,13 @@ export const Logo = () => {
     </Link>)
   );
 };
-export const LogoIcon = () => {
+export const LogoIcon = ({width = 200}) => {
   return (
     (<Link
       to={"/"}
       >
       <div className="rounded-md flex-shrink-0 flex items-center justify-center">
-        <img src={logo} alt="" className="" width="50" />
+        <img src={logo} alt="" className="" width={width} />
       </div>
     </Link>)
   );
