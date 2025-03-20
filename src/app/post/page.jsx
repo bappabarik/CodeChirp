@@ -1,20 +1,35 @@
 import dbService from '@/appwrite/db';
 import { Container, LinkedInCard, TweetCard } from '@/components';
+import { addPost } from '@/store/postSlice';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 const Post = () => {
     const {slug} = useParams()
-    const [post, setPost] = useState({})
+    const [post, setPost] = useState()
+    const userData = useSelector(state => state.auth.userData)
+    const posts = useSelector(state => state.posts.posts)
+    const dispatch = useDispatch()
+
     useEffect(() => {
+
         if (slug) {
-            dbService.getPost(slug)
-            .then(data => {
-                console.log(data);
-                setPost(data)
-            })
+            const matchPost = posts?.find((post) => post.$id === slug)
+            if (matchPost ) {  
+               setPost(matchPost) 
+            } else {
+                dbService.getPost(slug)
+                .then(data => {
+                    if (data.providerID === userData?.targets[0].providerId) {
+                        setPost(data)
+                        dispatch(addPost(data))
+                        console.log(data);
+                    }
+                })
+            }
         }
-    }, []);
+    }, [slug]);
     return (
         <Container>
             <div
@@ -28,9 +43,10 @@ const Post = () => {
                 opacity: 0.2,
                 }}
             />
-            {
-                post.app === 'X' ? <TweetCard post={post} /> : <LinkedInCard post={post} />
-            }
+            <div className="flex justify-center items-center overflow-auto z-20 h-full w-full ">
+                {post?.app === 'linkedin' && <LinkedInCard post={post} />}
+               { post?.app === 'X' && <TweetCard post={post} />  } 
+            </div>  
         </Container>
     );
 }

@@ -8,7 +8,7 @@ const Sidebar2List = ({items, fetchData, loading, hasMore}) => {
    
 
     return (
-      <div className=' overflow-auto h-full w-full md:mb-0 mb-10 md:pr-10'>
+      <div className=' overflow-auto h-full w-full md:mt-0 mt-10 md:pr-10'>
         { 
           !loading ?  (
             items.length !== 0  ? (

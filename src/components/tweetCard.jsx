@@ -16,7 +16,7 @@ const TweetCard = ({ post }) => {
 
     return (
         <div className="flex justify-center items-center m-auto">
-            <div className=" flex flex-col p-4 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 w-full break-words z-10 space-y-3">
+            <div className=" flex flex-col p-4 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 md:max-w-lg break-words z-10 space-y-3">
                 <div className="flex justify-between">
                     <span className='flex gap-2'>
                         <img

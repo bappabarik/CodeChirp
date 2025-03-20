@@ -4,7 +4,8 @@ const initialState = {
     linkedinPosts: [],
     xPosts: [],
     totalLinkedinPosts: 0,
-    totalXPosts: 0
+    totalXPosts: 0,
+    posts: []
 }
 
 const postSlice = createSlice({
@@ -28,10 +29,13 @@ const postSlice = createSlice({
         },
         addTotalXPosts: (state, action) => {
             state.totalXPosts = action.payload || 0;
+        },
+        addPost: (state, action) => {
+            state.posts.push(action.payload);
         }
     }
 })
 
-export const { addLinkedinPosts, prependLinkedinPosts, addXPosts, prependXPosts, addTotalLinkedinPosts, addTotalXPosts } = postSlice.actions;
+export const { addLinkedinPosts, prependLinkedinPosts, addXPosts, prependXPosts, addTotalLinkedinPosts, addTotalXPosts, addPost } = postSlice.actions;
 
 export default postSlice.reducer;
