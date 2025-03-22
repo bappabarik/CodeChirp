@@ -34,7 +34,6 @@ const LinkedIn = () => {
             if (newPost) {
                 dispatch(prependLinkedinPosts([newPost]))
             }
-            // console.log(newPost);
             
         })
         return () => {

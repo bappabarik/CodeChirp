@@ -14,9 +14,6 @@ const LinkedInCard = ({ post, loading }) => {
   const [isReadMore, setIsReadMore] = useState(false);
   const postRef = useRef(null)
 
-  console.log(loading);
-  
-
   const handleBlur = () => {
     setIsEditing(false);
   };
