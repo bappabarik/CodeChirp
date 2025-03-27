@@ -35,7 +35,7 @@ const Tweets = () => {
             // console.log(newPost);
         })
         return () => {
-            dbService.unsubscribe()
+            dbService.unsubscribeToPost()
         };
     }, [dispatch]);
 

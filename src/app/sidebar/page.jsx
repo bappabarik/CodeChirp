@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { MoveLeft, Settings, SquareTerminal, UserRound } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 import logo from "../../assets/logo.svg"
-// import arrow from "../../assets/arrow.svg"
+import arrow from "../../assets/arrow.svg"
 import { useDispatch, useSelector } from "react-redux";
 import authService from "@/appwrite/auth";
 import { logout } from "@/store/authSlice";
@@ -76,6 +76,7 @@ export function SidebarNavigationMenu() {
   ];
   const [open, setOpen] = useState(false);
   const userData = useSelector(state => state.auth.userData)
+  const installationStatus = useSelector(state => state.auth.installationStatus)
 
   return (
     <div
@@ -94,7 +95,12 @@ export function SidebarNavigationMenu() {
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-            {open ? <Logo /> : <LogoIcon />}
+            {open ? <div className="flex"><Logo /> {!installationStatus &&
+          <a
+            href='https://github.com/apps/codechirp/installations/select_target'
+            className=" ml-2 border-slate-500 hover:border-[1px] transition-all duration-200 bg-green-700 px-4 py-1 rounded-md">
+            Install
+        </a>}</div> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2 items-start">
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
@@ -123,6 +129,7 @@ export function SidebarNavigationMenu() {
   );
 }
 export const Logo = ({width = 50}) => {
+
   return (
     (<Link
       to={"/"}
@@ -133,12 +140,6 @@ export const Logo = ({width = 50}) => {
         animate={{ opacity: 1 }}
         className="font-medium text-black dark:text-white whitespace-pre">
         CodeChirp AI 
-        {/* {"  "}
-        <a
-            href='https://github.com/apps/codechirp/installations/select_target'
-            className="mb-16 border-slate-500 hover:border-[1px] transition-all duration-200 bg-green-700 px-4 py-1 rounded-md">
-            Install
-        </a> */}
       </motion.span>
     </Link>)
   );

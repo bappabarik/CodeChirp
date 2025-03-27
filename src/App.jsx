@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import authService from "./appwrite/auth";
-import { useDispatch } from "react-redux";
-import { login, logout } from "./store/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { changeInstallationStatus, login, logout } from "./store/authSlice";
+import dbService from "./appwrite/db";
 
 function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const installationStatus = useSelector(state => state.auth.installationStatus)
+  const userData = useSelector(state => state.auth.userData)
 
   useEffect(() => {
     // Check if user data exists in localStorage
@@ -38,6 +41,37 @@ function App() {
           setLoading(false);
         });
     }
+  }, [dispatch]);
+
+  useEffect(() => {  
+    if (!installationStatus && userData) {
+      dbService.getGithubAppData(userData.targets[0].providerId)
+      .then(data => {
+        if (data) {
+          console.log(data);
+          
+          dispatch(changeInstallationStatus(true))
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    }
+
+  }, [userData]);
+
+  useEffect(() => {
+    if (userData) {
+    dbService.subscribeToGithubApp(userData.targets[0].providerId, (deleteEvent) => {
+      if (deleteEvent) {
+        dispatch(changeInstallationStatus(false))
+        console.log(deleteEvent);
+      }
+    })
+  }
+    return () => {
+      dbService.unsubscribeToGithubApp()
+    };
   }, [dispatch]);
 
 

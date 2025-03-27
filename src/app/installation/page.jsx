@@ -13,21 +13,25 @@ const Installation = () => {
     const installationID = queryParameters.get("installation_id")
     const navigate = useNavigate()
     const userData = useSelector(state => state.auth.userData)
+    const installationStatus = useSelector(state => state.auth.installationStatus)
 
     useEffect(() => {
       
-      if (userData) {
-        dbService.getGithubAppData(userData.targets[0].providerId)
-        .then(isInstalled => {
-
-        if (!isInstalled) {
-          if (installationID && userData.targets[0].providerId) {
+      if (userData && !installationStatus) {
+        console.log("ran..1");
+        
+          if (installationID) {
+            console.log("ran..2");
           dbService.storeGithubAppData(userData.targets[0].providerId, {installationID})
           .then(data => {
             if (data) {
               console.log(response);
               navigate("/dashboard")
               setLoading(false)
+            } else {
+              navigate("/dashboard")
+              setLoading(false)
+
             }
           })
           .catch(error => {
@@ -35,15 +39,15 @@ const Installation = () => {
             navigate("/dashboard")
             setLoading(false)
           } )
-        }
         } else {
-            navigate("/dashboard")
-            setLoading(false)
+          setLoading(false)
         }
-      })
-
-      }
-    }, [userData]);
+      } else {
+        console.log("did not run..2");
+        navigate("/dashboard")
+        setLoading(false)
+    }
+    }, [installationStatus]);
 
     return (
       <Container>

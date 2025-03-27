@@ -4,14 +4,16 @@ import { Client, Databases, Query } from "appwrite";
 export class DbService{
     client = new Client();
     databases;
-    subscription;
+    postSubscription;
+    gitHubAppSubscription;
     constructor(){
         this.client
             .setEndpoint(conf.appwriteUrl)
             .setProject(conf.appwriteProjectId);
 
         this.databases = new Databases(this.client)
-        this.subscription = null;
+        this.postSubscription = null;
+        this.gitHubAppSubscription = null;
     }
 
     async storeGithubAppData(providerId, {installationID}){
@@ -78,7 +80,7 @@ export class DbService{
     }
 
     subscribeToPosts(providerId, App, callback){
-        this.subscription = this.client.subscribe(`databases.${conf.appwriteDatabaseId}.collections.${conf.appwritePostCollectionId}.documents`, response => {
+        this.postSubscription = this.client.subscribe(`databases.${conf.appwriteDatabaseId}.collections.${conf.appwritePostCollectionId}.documents`, response => {
             // console.log("Realtime Update:", response);
             if (response.events.includes("databases.*.collections.*.documents.*.create")) {
                 const {providerID, app} = response.payload
@@ -90,10 +92,28 @@ export class DbService{
             }
         });
     }
+    
+    unsubscribeToPost() {
+        if (this.postSubscription) {
+          this.postSubscription();
+        }
+    }
 
-    unsubscribe() {
-        if (this.subscription) {
-          this.subscription();
+    subscribeToGithubApp(providerId, callback){
+        this.gitHubAppSubscription = this.client.subscribe(`databases.${conf.appwriteDatabaseId}.collections.${conf.appwriteCodeChirpGithubAppCollectionId}.documents`, response => {
+            console.log("Realtime Update:", response);
+            if (response.events.includes("databases.*.collections.*.documents.*.delete")) {
+                const {providerID} = response.payload
+                if (providerID === providerId) {
+                    callback(true);
+                }
+            }
+        });
+    }
+
+    unsubscribeToGithubApp() {
+        if (this.gitHubAppSubscription) {
+          this.gitHubAppSubscription();
         }
     }
 

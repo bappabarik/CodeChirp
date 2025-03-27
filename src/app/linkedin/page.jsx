@@ -1,8 +1,6 @@
 import dbService from '@/appwrite/db';
 import { Container, Sidebar2List } from '@/components';
-// import conf from '@/conf/conf';
 import { addLinkedinPosts, prependLinkedinPosts } from '@/store/postSlice';
-// import { Client } from 'appwrite';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -37,7 +35,7 @@ const LinkedIn = () => {
             
         })
         return () => {
-            dbService.unsubscribe()
+            dbService.unsubscribeToPost()
         };
     }, [dispatch]);
 
