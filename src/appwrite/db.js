@@ -103,8 +103,8 @@ export class DbService{
         this.gitHubAppSubscription = this.client.subscribe(`databases.${conf.appwriteDatabaseId}.collections.${conf.appwriteCodeChirpGithubAppCollectionId}.documents`, response => {
             console.log("Realtime Update:", response);
             if (response.events.includes("databases.*.collections.*.documents.*.delete")) {
-                const {providerID} = response.payload
-                if (providerID === providerId) {
+                const {$id} = response.payload
+                if ($id === providerId) {
                     callback(true);
                 }
             }

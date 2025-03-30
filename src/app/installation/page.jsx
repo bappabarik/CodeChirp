@@ -18,10 +18,7 @@ const Installation = () => {
     useEffect(() => {
       
       if (userData && !installationStatus) {
-        console.log("ran..1");
-        
           if (installationID) {
-            console.log("ran..2");
           dbService.storeGithubAppData(userData.targets[0].providerId, {installationID})
           .then(data => {
             if (data) {
@@ -43,7 +40,6 @@ const Installation = () => {
           setLoading(false)
         }
       } else {
-        console.log("did not run..2");
         navigate("/dashboard")
         setLoading(false)
     }

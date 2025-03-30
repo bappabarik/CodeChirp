@@ -41,6 +41,16 @@ function App() {
           setLoading(false);
         });
     }
+    dbService.subscribeToGithubApp(cachedUser.targets[0].providerId, (deleteEvent) => {
+      if (deleteEvent) {
+        dispatch(changeInstallationStatus(false))
+        console.log(deleteEvent);
+      }
+    })
+
+    return () => {
+      dbService.unsubscribeToGithubApp()
+    };
   }, [dispatch]);
 
   useEffect(() => {  
@@ -48,8 +58,6 @@ function App() {
       dbService.getGithubAppData(userData.targets[0].providerId)
       .then(data => {
         if (data) {
-          console.log(data);
-          
           dispatch(changeInstallationStatus(true))
         }
       })
@@ -60,19 +68,19 @@ function App() {
 
   }, [userData]);
 
-  useEffect(() => {
-    if (userData) {
-    dbService.subscribeToGithubApp(userData.targets[0].providerId, (deleteEvent) => {
-      if (deleteEvent) {
-        dispatch(changeInstallationStatus(false))
-        console.log(deleteEvent);
-      }
-    })
-  }
-    return () => {
-      dbService.unsubscribeToGithubApp()
-    };
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (userData) {
+  //   dbService.subscribeToGithubApp(userData.targets[0].providerId, (deleteEvent) => {
+  //     if (deleteEvent) {
+  //       dispatch(changeInstallationStatus(false))
+  //       console.log(deleteEvent);
+  //     }
+  //   })
+  // }
+  //   return () => {
+  //     dbService.unsubscribeToGithubApp()
+  //   };
+  // }, [dispatch]);
 
 
   return !loading ? (
