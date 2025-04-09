@@ -98,7 +98,7 @@ export function SidebarNavigationMenu() {
             {open ? <div className="flex"><Logo /> {!installationStatus &&
           <a
             href='https://github.com/apps/codechirp/installations/select_target'
-            className=" ml-2 border-slate-500 hover:border-[1px] transition-all duration-200 bg-green-700 px-4 py-1 rounded-md">
+            className=" ml-4 border-slate-500 hover:border-[1px] transition-all duration-200 bg-green-700 px-4 py-1 rounded-md">
             Install
         </a>}</div> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2 items-start">
@@ -131,17 +131,19 @@ export function SidebarNavigationMenu() {
 export const Logo = ({width = 50}) => {
 
   return (
-    (<Link
+    <div className="flex items-center justify-center gap-2">
+    <LogoIcon width={width} />
+    <Link
       to={"/"}
       className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
-      <LogoIcon width={width} />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="font-medium text-black dark:text-white whitespace-pre">
         CodeChirp AI 
       </motion.span>
-    </Link>)
+    </Link>
+    </div>
   );
 };
 export const LogoIcon = ({width = 200}) => {

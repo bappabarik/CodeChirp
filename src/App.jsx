@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import authService from "./appwrite/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { changeInstallationStatus, login, logout } from "./store/authSlice";
+import { changeInstallationStatus, fetchInstallation, login, logout } from "./store/authSlice";
 import dbService from "./appwrite/db";
 
 function App() {
@@ -41,7 +41,7 @@ function App() {
           setLoading(false);
         });
     }
-    dbService.subscribeToGithubApp(cachedUser.targets[0].providerId, (deleteEvent) => {
+    dbService.subscribeToGithubApp(cachedUser?.targets[0].providerId, (deleteEvent) => {
       if (deleteEvent) {
         dispatch(changeInstallationStatus(false))
         console.log(deleteEvent);
@@ -53,20 +53,24 @@ function App() {
     };
   }, [dispatch]);
 
-  useEffect(() => {  
-    if (!installationStatus && userData) {
-      dbService.getGithubAppData(userData.targets[0].providerId)
-      .then(data => {
-        if (data) {
-          dispatch(changeInstallationStatus(true))
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      })
-    }
+  useEffect(() => {
+    dispatch(fetchInstallation());
+  }, [dispatch]);
 
-  }, [userData]);
+  // useEffect(() => {  
+  //   if (!installationStatus && userData) {
+  //     dbService.getGithubAppData(userData.targets[0].providerId)
+  //     .then(data => {
+  //       if (data) {
+  //         dispatch(changeInstallationStatus(true))
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     })
+  //   }
+
+  // }, [userData]);
 
   // useEffect(() => {
   //   if (userData) {
@@ -96,9 +100,9 @@ function App() {
             ))}
         </div>
         <div className="flex flex-col gap-2 flex-1">
-            {[...new Array(1)].map((i) => (
+            {[...new Array(1)].map((_, index) => (
                 <div
-                key={"second-array" + i}
+                key={`skeleton-${index}`}
                 className="h-full w-full rounded-lg  bg-gray-100 dark:bg-neutral-800 animate-pulse"></div>
             ))}
         </div>

@@ -3,6 +3,7 @@ import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link } from 'react-router-dom';
 import Loader from './ui/loader';
+import ReactMarkdown from "react-markdown";
 
 const Sidebar2List = ({items, fetchData, loading, hasMore}) => {
    
@@ -35,7 +36,7 @@ const Sidebar2List = ({items, fetchData, loading, hasMore}) => {
                 <span>Event: {post.event}</span>{" "}
                 <span className="ml-auto text-xs">{formatDateTime(post.$updatedAt)}</span>
               </div>
-              <span className="font-medium line-clamp-1 w-full break-words">{post.content}</span>
+              <span className="font-medium line-clamp-1 w-full break-words"><ReactMarkdown>{post.content}</ReactMarkdown></span>
               <span className="line-clamp-2 w-[260px] whitespace-break-spaces text-xs">
                 Created for {post.app}
               </span>

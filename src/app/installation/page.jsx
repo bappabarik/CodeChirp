@@ -8,17 +8,20 @@ import { useSelector } from 'react-redux';
 import Loader from '@/components/ui/loader';
 
 const Installation = () => {
-    const [loading, setLoading] = useState(true);
-    const queryParameters = new URLSearchParams(window.location.search)
-    const installationID = queryParameters.get("installation_id")
-    const navigate = useNavigate()
-    const userData = useSelector(state => state.auth.userData)
-    const installationStatus = useSelector(state => state.auth.installationStatus)
+  const queryParameters = new URLSearchParams(window.location.search)
+  const installationID = queryParameters.get("installation_id")
+  const navigate = useNavigate()
+  const userData = useSelector(state => state.auth.userData)
+  const installationStatus = useSelector(state => state.auth.installationStatus)
+  const [loading, setLoading] = useState(!installationStatus);
 
     useEffect(() => {
       
       if (userData && !installationStatus) {
+        console.log("first if...");
+        
           if (installationID) {
+            console.log("second if...");
           dbService.storeGithubAppData(userData.targets[0].providerId, {installationID})
           .then(data => {
             if (data) {
@@ -37,9 +40,11 @@ const Installation = () => {
             setLoading(false)
           } )
         } else {
+          console.log("second else...")
           setLoading(false)
         }
       } else {
+        console.log("first else...")
         navigate("/dashboard")
         setLoading(false)
     }
