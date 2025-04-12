@@ -106,6 +106,15 @@ export class DbService{
                 const {$id} = response.payload
                 if ($id === providerId) {
                     callback(true);
+                    return
+                }
+            }
+
+            if (response.events.includes("databases.*.collections.*.documents.*.create")) {
+                const {$id} = response.payload
+                if ($id === providerId) {
+                    callback(false);
+                    return
                 }
             }
         });

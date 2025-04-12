@@ -46,6 +46,10 @@ function App() {
         dispatch(changeInstallationStatus(false))
         console.log(deleteEvent);
       }
+      if (!deleteEvent) {
+        dispatch(changeInstallationStatus(true))
+        console.log(deleteEvent);
+      }
     })
 
     return () => {
