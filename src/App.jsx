@@ -44,11 +44,9 @@ function App() {
     dbService.subscribeToGithubApp(cachedUser?.targets[0].providerId, (deleteEvent) => {
       if (deleteEvent) {
         dispatch(changeInstallationStatus(false))
-        console.log(deleteEvent);
       }
       if (!deleteEvent) {
         dispatch(changeInstallationStatus(true))
-        console.log(deleteEvent);
       }
     })
 
