@@ -6,6 +6,7 @@ const initialState = {
   userData: null,
   installationStatus: false,
   installationId: null,
+  loading: true
 };
 
 export const fetchInstallation = createAsyncThunk(
@@ -19,7 +20,9 @@ export const fetchInstallation = createAsyncThunk(
         const response = await dbService.getGithubAppData(
           userData.targets[0].providerId
         );
-        // console.log(response.installationID);
+        if(!response){
+          throw new Error( "No github app installation foUND")
+        }
         return response.installationID;
       }
       return null;
@@ -50,13 +53,18 @@ const authSlice = createSlice({
       state.installationStatus = false;
     });
     builder.addCase(fetchInstallation.fulfilled, (state, action) => {
-      state.installationStatus = true;
-      state.installationId = action.payload; // Update posts in the state
+      if (action.payload) {
+        state.installationStatus = true;
+        state.installationId = action.payload; // Update posts in the state
+        state.loading = false;
+      }
+
       // console.log("Posts updated in state:", state.posts);
     });
     builder.addCase(fetchInstallation.rejected, (state, action) => {
       state.installationStatus = false;
       state.error = action.error.message || "Failed to fetch posts";
+      state.loading = false;
       console.error("Error in rejected state:", action.error);
     });
   },

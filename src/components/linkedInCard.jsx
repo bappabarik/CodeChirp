@@ -25,16 +25,6 @@ const LinkedInCard = ({ post, loading }) => {
     }
   }, [isEditing, content]);
 
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text)
-      .then(() => {
-        // You could add a toast notification here
-        console.log('Text copied to clipboard');
-      })
-      .catch(err => {
-        console.error('Failed to copy text: ', err);
-      });
-  };
   
   // Function to download code as a file
   const downloadAsFile = (text, language) => {
@@ -49,7 +39,7 @@ const LinkedInCard = ({ post, loading }) => {
 
 
   return (
-    <div className=" w-full h-full md:flex items-center justify-center md:mt-0 mt-20">
+    <div className=" w-full h-full md:flex items-center justify-center md:mt-[24rem] mt-20">
       <div className="bg-white dark:bg-neutral-900 border shadow-sm px-5 py-4 rounded-lg max-w-full md:w-[40rem]">
         {/* User Info */}
         <div className="flex justify-between">
@@ -128,6 +118,7 @@ const LinkedInCard = ({ post, loading }) => {
                             style={tomorrow}
                             language={language}
                             wrapLongLines={true}
+                            className="rounded-md"
                             {...props}
                           >
                             {codeText}
@@ -135,7 +126,7 @@ const LinkedInCard = ({ post, loading }) => {
                         </div>
                       </div>
                     ) : (
-                      <code className="bg-zinc-700 text-white px-1 py-1 rounded text-wrap" {...props}>
+                      <code className="bg-zinc-700 text-white px-1 py-1 my-1 rounded text-wrap" {...props}>
                         {children}
                       </code>
                     );

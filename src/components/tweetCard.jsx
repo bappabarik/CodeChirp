@@ -4,69 +4,130 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { BsTwitterX } from "react-icons/bs";
 import CopyToClipboard from "./copyToClipboard";
 import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const TweetCard = ({ post, loading }) => {
   const userData = useSelector((state) => state.auth.userData);
   const [content, setContent] = useState(post?.content || "");
   const [isEditing, setIsEditing] = useState(false);
   const postRef = useRef(null);
+  const codeSnippet = useRef(null);
 
   const handleBlur = () => {
     setIsEditing(false);
   };
 
+  // Function to download code as a file
+  const downloadAsFile = (text, language) => {
+    const element = document.createElement("a");
+    const file = new Blob([text], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = `code-snippet.${language || "txt"}`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
+
   return (
     <div className="flex items-center justify-center w-full px-4 sm:px-0">
-        <div className="bg-white dark:bg-neutral-900 border shadow-sm px-4 sm:px-6 py-4 rounded-lg w-full max-w-xl">
-          {/* Header Section */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img
-                src={userData?.prefs.avatar}
-                className="h-12 w-12 rounded-full flex-shrink-0"
-                width={50}
-                height={50}
-                alt="Avatar"
-              />
-              <div className="text-sm sm:text-base dark:text-white">
-                <span className="font-semibold flex items-center gap-1">
-                  {userData?.name}
-                  <RiVerifiedBadgeFill className="text-blue-400 text-lg" />
-                </span>
-                <span className="text-xs sm:text-sm italic opacity-50">
-                  @{userData?.name.toLowerCase().replaceAll(" ", "")}
-                </span>
-              </div>
-            </div>
-            {/* Engagement Section */}
-            <div className="flex flex-col items-center gap-2">
-              <BsTwitterX className="text-neutral-700 dark:text-neutral-200" />
-              <CopyToClipboard postRef={postRef} />
+      <div className="bg-white dark:bg-neutral-900 border shadow-sm px-4 sm:px-6 py-4 rounded-lg w-full max-w-xl">
+        {/* Header Section */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img
+              src={userData?.prefs.avatar}
+              className="h-12 w-12 rounded-full flex-shrink-0"
+              width={50}
+              height={50}
+              alt="Avatar"
+            />
+            <div className="text-sm sm:text-base dark:text-white">
+              <span className="font-semibold flex items-center gap-1">
+                {userData?.name}
+                <RiVerifiedBadgeFill className="text-blue-400 text-lg" />
+              </span>
+              <span className="text-xs sm:text-sm italic opacity-50">
+                @{userData?.name.toLowerCase().replaceAll(" ", "")}
+              </span>
             </div>
           </div>
-  
-          {/* Editable Content */}
-          <div className="mt-3 w-full">
-            {isEditing ? (
-              <textarea
-                autoFocus
-                className="w-full h-40 p-2 bg-transparent border border-neutral-300 dark:border-neutral-600 rounded-md focus:outline-none text-sm sm:text-base"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                onBlur={handleBlur}
-              />
-            ) : (
-              <div
-                onClick={() => setIsEditing(true)}
-                className="cursor-pointer break-words overflow-wrap w-full text-sm sm:text-base"
-                ref={postRef}
-              >
-                <ReactMarkdown>{content}</ReactMarkdown>
-              </div>
-            )}
+          {/* Engagement Section */}
+          <div className="flex flex-col items-center gap-2">
+            <BsTwitterX className="text-neutral-700 dark:text-neutral-200" />
+            <CopyToClipboard postRef={postRef} />
           </div>
         </div>
+
+        {/* Editable Content */}
+        <div className="mt-3 w-full">
+          {isEditing ? (
+            <textarea
+              autoFocus
+              className="w-full h-40 p-2 bg-transparent border border-neutral-300 dark:border-neutral-600 rounded-md focus:outline-none text-sm sm:text-base"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              onBlur={handleBlur}
+            />
+          ) : (
+            <div
+              onClick={() => setIsEditing(true)}
+              className="cursor-pointer break-words overflow-wrap w-full text-sm sm:text-base"
+              ref={postRef}
+            >
+              <ReactMarkdown
+                components={{
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    const language = match ? match[1] : "";
+                    const codeText = String(children).replace(/\n$/, "");
+
+                    return !inline && match ? (
+                      <div className="relative rounded-md overflow-hidden">
+                        <div className="absolute right-0 top-0 m-2 flex space-x-2 z-10">
+                          <CopyToClipboard postRef={codeSnippet} />
+                          <button
+                            onClick={() => downloadAsFile(codeText, language)}
+                            className="bg-gray-700 hover:bg-gray-600 text-white text-xs px-2 py-1 rounded"
+                          >
+                            Download
+                          </button>
+                        </div>
+                        <div
+                          className="overflow-x-auto w-full mt-8 rounded-lg"
+                          ref={codeSnippet}
+                        >
+                          {" "}
+                          {/* Added margin-top to prevent overlap with buttons */}
+                          <SyntaxHighlighter
+                            style={tomorrow}
+                            language={language}
+                            wrapLongLines={true}
+                            className="rounded-md"
+                            {...props}
+                          >
+                            {codeText}
+                          </SyntaxHighlighter>
+                        </div>
+                      </div>
+                    ) : (
+                      <code
+                        className="bg-zinc-700 text-white px-1 py-1 my-3 rounded text-wrap"
+                        {...props}
+                      >
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              >
+                {content}
+              </ReactMarkdown>
+            </div>
+          )}
+        </div>
       </div>
+    </div>
   );
 };
 

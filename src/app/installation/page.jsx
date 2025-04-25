@@ -4,8 +4,9 @@ import { Github } from 'lucide-react';
 import { Container } from '@/components';
 import { useNavigate } from 'react-router-dom';
 import dbService from '@/appwrite/db';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Loader from '@/components/ui/loader';
+import { fetchInstallation } from '@/store/authSlice';
 
 const Installation = () => {
   const queryParameters = new URLSearchParams(window.location.search)
@@ -13,9 +14,13 @@ const Installation = () => {
   const navigate = useNavigate()
   const userData = useSelector(state => state.auth.userData)
   const installationStatus = useSelector(state => state.auth.installationStatus)
-  const [loading, setLoading] = useState(!installationStatus);
+  const loading = useSelector(state => state.auth.loading)
+  const dispatch = useDispatch()
+
 
     useEffect(() => {
+      console.log(installationStatus);
+      dispatch(fetchInstallation());
       
       if (userData && !installationStatus) {
         console.log("first if...");
@@ -27,28 +32,23 @@ const Installation = () => {
             if (data) {
               console.log(response);
               navigate("/dashboard")
-              setLoading(false)
             } else {
               navigate("/dashboard")
-              setLoading(false)
 
             }
           })
           .catch(error => {
             console.log(error);
             navigate("/dashboard")
-            setLoading(false)
           } )
         } else {
           console.log("second else...")
-          setLoading(false)
         }
       } else {
         console.log("first else...")
         navigate("/dashboard")
-        setLoading(false)
     }
-    }, [installationStatus]);
+    }, [installationStatus, dispatch]);
 
     return (
       <Container>

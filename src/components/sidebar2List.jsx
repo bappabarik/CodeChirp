@@ -36,6 +36,7 @@ const Sidebar2List = ({items, fetchData, loading, hasMore}) => {
                 <span>Event: {post.event}</span>{" "}
                 <span className="ml-auto text-xs">{formatDateTime(post.$updatedAt)}</span>
               </div>
+              {post.commitMessage && <span>Commit Message: <span className='font-medium bg-yellow-500 text-black rounded p-[3px]'>{post.commitMessage}</span></span>}
               <span className="font-medium line-clamp-1 w-full break-words"><ReactMarkdown>{post.content}</ReactMarkdown></span>
               <span className="line-clamp-2 w-[260px] whitespace-break-spaces text-xs">
                 Created for {post.app}
