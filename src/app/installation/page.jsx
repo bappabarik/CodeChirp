@@ -19,9 +19,9 @@ const Installation = () => {
 
 
     useEffect(() => {
-      console.log(loading);
+      // console.log(loading);
       dispatch(fetchInstallation());
-      console.log(loading);
+      // console.log(loading);
       
       if (userData && !installationStatus) {        
           if (installationID) {

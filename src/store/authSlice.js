@@ -17,7 +17,7 @@ export const fetchInstallation = createAsyncThunk(
       const userData = state.auth.userData;
 
       if (userData) {
-        console.log(1);
+        // console.log(1);
         
         const response = await dbService.getGithubAppData(
           userData.targets[0].providerId
@@ -29,7 +29,7 @@ export const fetchInstallation = createAsyncThunk(
       }
       return null;
     } catch (error) {
-      console.log(2);
+      // console.log(2);
       
       throw error; // This will trigger the rejected case
     }
