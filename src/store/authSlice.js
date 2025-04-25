@@ -17,6 +17,8 @@ export const fetchInstallation = createAsyncThunk(
       const userData = state.auth.userData;
 
       if (userData) {
+        console.log(1);
+        
         const response = await dbService.getGithubAppData(
           userData.targets[0].providerId
         );
@@ -27,6 +29,8 @@ export const fetchInstallation = createAsyncThunk(
       }
       return null;
     } catch (error) {
+      console.log(2);
+      
       throw error; // This will trigger the rejected case
     }
   }
@@ -54,6 +58,8 @@ const authSlice = createSlice({
     });
     builder.addCase(fetchInstallation.fulfilled, (state, action) => {
       if (action.payload) {
+        // console.log(4, action.payload);
+        
         state.installationStatus = true;
         state.installationId = action.payload; // Update posts in the state
         state.loading = false;
@@ -62,6 +68,8 @@ const authSlice = createSlice({
       // console.log("Posts updated in state:", state.posts);
     });
     builder.addCase(fetchInstallation.rejected, (state, action) => {
+      // console.log(3);
+      
       state.installationStatus = false;
       state.error = action.error.message || "Failed to fetch posts";
       state.loading = false;

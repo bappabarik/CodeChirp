@@ -19,14 +19,12 @@ const Installation = () => {
 
 
     useEffect(() => {
-      console.log(installationStatus);
+      console.log(loading);
       dispatch(fetchInstallation());
+      console.log(loading);
       
-      if (userData && !installationStatus) {
-        console.log("first if...");
-        
+      if (userData && !installationStatus) {        
           if (installationID) {
-            console.log("second if...");
           dbService.storeGithubAppData(userData.targets[0].providerId, {installationID})
           .then(data => {
             if (data) {
@@ -45,7 +43,6 @@ const Installation = () => {
           console.log("second else...")
         }
       } else {
-        console.log("first else...")
         navigate("/dashboard")
     }
     }, [installationStatus, dispatch]);
