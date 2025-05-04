@@ -92,7 +92,6 @@ const LinkedInCard = ({ post, loading }) => {
             <div
               onClick={() => setIsEditing(true)}
               className="cursor-pointer h-full break-words"
-              ref={postRef}
             >
               <ReactMarkdown
                 components={{
@@ -127,9 +126,11 @@ const LinkedInCard = ({ post, loading }) => {
                         </div>
                       </div>
                     ) : (
-                      <code className="bg-zinc-700 text-white px-1 py-1 my-1 rounded text-wrap" {...props}>
-                        {children}
-                      </code>
+                      <div className="w-full" ref={postRef} >
+                        <code className="bg-zinc-700 text-white px-1 py-1 my-1 rounded text-wrap" {...props}>
+                          {children}
+                        </code>
+                      </div>
                     );
                   },
                 }}
