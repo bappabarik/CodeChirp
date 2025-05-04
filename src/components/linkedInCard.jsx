@@ -5,6 +5,7 @@ import { FaLinkedinIn } from "react-icons/fa6";
 import CopyToClipboard from "./copyToClipboard";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { GoDownload } from "react-icons/go";
 
 const LinkedInCard = ({ post, loading }) => {
   const userData = useSelector((state) => state.auth.userData);
@@ -108,7 +109,7 @@ const LinkedInCard = ({ post, loading }) => {
                             onClick={() => downloadAsFile(codeText, language)}
                             className="bg-gray-700 hover:bg-gray-600 text-white text-xs px-2 py-1 rounded"
                           >
-                            Download
+                            <GoDownload  className="text-lg" />
                           </button>
                         </div>
                         <div className="overflow-x-auto w-full mt-8 rounded-lg" ref={codeSnippet}>

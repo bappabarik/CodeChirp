@@ -6,6 +6,7 @@ import CopyToClipboard from "./copyToClipboard";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { GoDownload } from "react-icons/go";
 
 const TweetCard = ({ post, loading }) => {
   const userData = useSelector((state) => state.auth.userData);
@@ -90,7 +91,7 @@ const TweetCard = ({ post, loading }) => {
                             onClick={() => downloadAsFile(codeText, language)}
                             className="bg-gray-700 hover:bg-gray-600 text-white text-xs px-2 py-1 rounded"
                           >
-                            Download
+                            <GoDownload className="text-lg" />
                           </button>
                         </div>
                         <div
