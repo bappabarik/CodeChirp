@@ -95,20 +95,34 @@ const TweetCard = ({ post, loading }) => {
                           </button>
                         </div>
                         <div
-                          className="overflow-x-auto w-full mt-8 rounded-lg"
+                          className="mt-8 w-full"
                           ref={codeSnippet}
                         >
-                          {" "}
-                          {/* Added margin-top to prevent overlap with buttons */}
+                          
                           <SyntaxHighlighter
-                            style={tomorrow}
-                            language={language}
-                            wrapLongLines={true}
-                            className="rounded-md"
-                            {...props}
-                          >
-                            {codeText}
-                          </SyntaxHighlighter>
+                          language={language}
+                          style={tomorrow}
+                          wrapLongLines={true}
+                          PreTag="div"
+                          customStyle={{
+                            whiteSpace: "pre-wrap",
+                            wordBreak: "break-word",
+                            overflow: "visible",
+                            padding: "1rem",
+                            fontSize: "0.875rem",
+                            background: "black",   
+                            borderRadius: "5px",   
+                          }}
+                          codeTagProps={{
+                            style: {
+                              whiteSpace: "pre-wrap",
+                              wordBreak: "break-word",
+                            },
+                          }}
+                          {...props}
+                        >
+                          {codeText}
+                        </SyntaxHighlighter>
                         </div>
                       </div>
                     ) : (

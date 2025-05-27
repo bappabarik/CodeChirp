@@ -26,18 +26,16 @@ const LinkedInCard = ({ post, loading }) => {
     }
   }, [isEditing, content]);
 
-  
   // Function to download code as a file
   const downloadAsFile = (text, language) => {
-    const element = document.createElement('a');
-    const file = new Blob([text], {type: 'text/plain'});
+    const element = document.createElement("a");
+    const file = new Blob([text], { type: "text/plain" });
     element.href = URL.createObjectURL(file);
-    element.download = `code-snippet.${language || 'txt'}`;
+    element.download = `code-snippet.${language || "txt"}`;
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
   };
-
 
   return (
     <div className=" w-full h-full md:flex items-center justify-center md:mt-[30rem] mt-20">
@@ -103,22 +101,38 @@ const LinkedInCard = ({ post, loading }) => {
                     return !inline && match ? (
                       <div className="relative rounded-md overflow-hidden">
                         <div className="absolute right-0 top-0 m-2 flex space-x-2 z-10">
-                        <CopyToClipboard postRef={codeSnippet} />
+                          <CopyToClipboard postRef={codeSnippet} />
                           <button
                             onClick={() => downloadAsFile(codeText, language)}
                             className="bg-gray-700 hover:bg-gray-600 text-white text-xs px-2 py-1 rounded"
                           >
-                            <GoDownload  className="text-lg" />
+                            <GoDownload className="text-lg" />
                           </button>
                         </div>
-                        <div className="overflow-x-auto w-full mt-8 rounded-lg" ref={codeSnippet}>
-                          {" "}
-                          {/* Added margin-top to prevent overlap with buttons */}
+                        <div
+                          className="w-full mt-8"
+                          ref={codeSnippet}
+                        >
                           <SyntaxHighlighter
-                            style={tomorrow}
                             language={language}
+                            style={tomorrow}
                             wrapLongLines={true}
-                            className="rounded-md"
+                            PreTag="div"
+                            customStyle={{
+                              whiteSpace: "pre-wrap",
+                              wordBreak: "break-word",
+                              overflow: "visible",
+                              padding: "1rem",
+                              fontSize: "0.875rem",
+                              background: "black",
+                              borderRadius: "5px",
+                            }}
+                            codeTagProps={{
+                              style: {
+                                whiteSpace: "pre-wrap",
+                                wordBreak: "break-word",
+                              },
+                            }}
                             {...props}
                           >
                             {codeText}
@@ -126,8 +140,11 @@ const LinkedInCard = ({ post, loading }) => {
                         </div>
                       </div>
                     ) : (
-                      <div className="w-full" ref={postRef} >
-                        <code className="bg-zinc-700 text-white px-1 py-1 my-1 rounded text-wrap" {...props}>
+                      <div className="w-full" ref={postRef}>
+                        <code
+                          className="bg-zinc-700 text-white px-1 py-1 my-1 rounded text-wrap"
+                          {...props}
+                        >
                           {children}
                         </code>
                       </div>
