@@ -31,7 +31,7 @@ const TweetCard = ({ post, loading }) => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full px-4 sm:px-0">
+    <div className="flex items-center justify-center w-full  md:mt-36 mt-72">
       <div className="bg-white dark:bg-neutral-900 border shadow-sm px-4 sm:px-6 py-4 rounded-lg w-full max-w-xl">
         {/* Header Section */}
         <div className="flex items-center justify-between">

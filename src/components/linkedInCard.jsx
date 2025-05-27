@@ -40,7 +40,7 @@ const LinkedInCard = ({ post, loading }) => {
 
 
   return (
-    <div className=" w-full h-full md:flex items-center justify-center md:mt-[24rem] mt-20">
+    <div className=" w-full h-full md:flex items-center justify-center md:mt-[30rem] mt-20">
       <div className="bg-white dark:bg-neutral-900 border shadow-sm px-5 py-4 rounded-lg max-w-full md:w-[40rem]">
         {/* User Info */}
         <div className="flex justify-between">
