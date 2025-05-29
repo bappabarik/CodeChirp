@@ -7,13 +7,13 @@ import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { GoDownload } from "react-icons/go";
+import { MdEdit } from "react-icons/md";
 
 const TweetCard = ({ post, loading }) => {
   const userData = useSelector((state) => state.auth.userData);
   const [content, setContent] = useState(post?.content || "");
   const [isEditing, setIsEditing] = useState(false);
-  const postRef = useRef(null);
-  const codeSnippet = useRef(null);
+
 
   const handleBlur = () => {
     setIsEditing(false);
@@ -56,7 +56,12 @@ const TweetCard = ({ post, loading }) => {
           {/* Engagement Section */}
           <div className="flex flex-col items-center gap-2">
             <BsTwitterX className="text-neutral-700 dark:text-neutral-200" />
-            <CopyToClipboard postRef={postRef} />
+            <CopyToClipboard copyText={content} />
+            <button
+            onClick={() => setIsEditing(true)}
+            className="p-2 dark:bg-neutral-800 bg-slate-50 hover:bg-slate-200 rounded-lg  dark:border-none border border-black">
+              <MdEdit />
+            </button>
           </div>
         </div>
 
@@ -65,16 +70,14 @@ const TweetCard = ({ post, loading }) => {
           {isEditing ? (
             <textarea
               autoFocus
-              className="w-full h-40 p-2 bg-transparent border border-neutral-300 dark:border-neutral-600 rounded-md focus:outline-none text-sm sm:text-base"
+              className="w-full h-[25rem] p-2 bg-transparent border border-neutral-300 dark:border-neutral-600 rounded-md focus:outline-none text-sm sm:text-base"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               onBlur={handleBlur}
             />
           ) : (
             <div
-              onClick={() => setIsEditing(true)}
               className="cursor-pointer break-words overflow-wrap w-full text-sm sm:text-base"
-              ref={postRef}
             >
               <ReactMarkdown
                 components={{
@@ -86,19 +89,15 @@ const TweetCard = ({ post, loading }) => {
                     return !inline && match ? (
                       <div className="relative rounded-md overflow-hidden">
                         <div className="absolute right-0 top-0 m-2 flex space-x-2 z-10">
-                          <CopyToClipboard postRef={codeSnippet} />
+                          <CopyToClipboard copyText={codeText} />
                           <button
                             onClick={() => downloadAsFile(codeText, language)}
-                            className="bg-gray-700 hover:bg-gray-600 text-white text-xs px-2 py-1 rounded"
+                            className="dark:bg-neutral-800 bg-slate-50 hover:bg-slate-200 rounded-lg px-2 py-1 dark:border-none border border-black"
                           >
                             <GoDownload className="text-lg" />
                           </button>
                         </div>
-                        <div
-                          className="mt-8 w-full"
-                          ref={codeSnippet}
-                        >
-                          
+                       {" "}
                           <SyntaxHighlighter
                           language={language}
                           style={tomorrow}
@@ -123,7 +122,6 @@ const TweetCard = ({ post, loading }) => {
                         >
                           {codeText}
                         </SyntaxHighlighter>
-                        </div>
                       </div>
                     ) : (
                       <code

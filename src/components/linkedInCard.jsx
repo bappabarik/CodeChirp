@@ -6,6 +6,7 @@ import CopyToClipboard from "./copyToClipboard";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { GoDownload } from "react-icons/go";
+import { MdEdit } from "react-icons/md";
 
 const LinkedInCard = ({ post, loading }) => {
   const userData = useSelector((state) => state.auth.userData);
@@ -13,18 +14,18 @@ const LinkedInCard = ({ post, loading }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [edited, setEdited] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
-  const postRef = useRef(null);
-  const codeSnippet = useRef(null);
 
   const handleBlur = () => {
     setIsEditing(false);
   };
 
   useEffect(() => {
-    if (content) {
+    if (content !== '') {
       content !== post.content ? setEdited(true) : setEdited(false);
     }
   }, [isEditing, content]);
+
+
 
   // Function to download code as a file
   const downloadAsFile = (text, language) => {
@@ -39,7 +40,7 @@ const LinkedInCard = ({ post, loading }) => {
 
   return (
     <div className=" w-full h-full md:flex items-center justify-center md:mt-[30rem] mt-20">
-      <div className="bg-white dark:bg-neutral-900 border shadow-sm px-5 py-4 rounded-lg max-w-full md:w-[40rem]">
+      <div className=" bg-slate-50 dark:bg-neutral-900 border shadow px-5 py-4 rounded-lg max-w-full md:w-[40rem]">
         {/* User Info */}
         <div className="flex justify-between">
           <div className="flex items-center space-x-3">
@@ -73,7 +74,12 @@ const LinkedInCard = ({ post, loading }) => {
           </div>
           <div className="flex flex-col gap-2 items-center">
             <FaLinkedinIn />
-            <CopyToClipboard postRef={postRef} />
+            <CopyToClipboard copyText={content} />
+            <button
+            onClick={() => setIsEditing(true)}
+            className="p-2 dark:bg-neutral-800 bg-slate-50 hover:bg-slate-200 rounded-lg  dark:border-none border border-black">
+              <MdEdit />
+            </button>
           </div>
         </div>
         {/* Post Content */}
@@ -81,15 +87,14 @@ const LinkedInCard = ({ post, loading }) => {
           {isEditing ? (
             <textarea
               autoFocus
-              className="w-full h-60 p-2 bg-transparent border border-neutral-300 dark:border-neutral-600 rounded-md focus:outline-none"
+              className="w-full h-[25rem] p-2 bg-transparent border border-neutral-300 dark:border-neutral-600 rounded-md focus:outline-none"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               onBlur={handleBlur}
             />
           ) : (
             <div
-              onClick={() => setIsEditing(true)}
-              className="cursor-pointer h-full break-words"
+              className="h-full break-words"
             >
               <ReactMarkdown
                 components={{
@@ -101,18 +106,15 @@ const LinkedInCard = ({ post, loading }) => {
                     return !inline && match ? (
                       <div className="relative rounded-md overflow-hidden">
                         <div className="absolute right-0 top-0 m-2 flex space-x-2 z-10">
-                          <CopyToClipboard postRef={codeSnippet} />
+                          <CopyToClipboard copyText={codeText} />
                           <button
                             onClick={() => downloadAsFile(codeText, language)}
-                            className="bg-gray-700 hover:bg-gray-600 text-white text-xs px-2 py-1 rounded"
+                            className="dark:bg-neutral-800 bg-slate-50 hover:bg-slate-200 rounded-lg px-2 py-1 dark:border-none border border-black"
                           >
                             <GoDownload className="text-lg" />
                           </button>
                         </div>
-                        <div
-                          className="w-full mt-8"
-                          ref={codeSnippet}
-                        >
+                        {" "}
                           <SyntaxHighlighter
                             language={language}
                             style={tomorrow}
@@ -137,17 +139,14 @@ const LinkedInCard = ({ post, loading }) => {
                           >
                             {codeText}
                           </SyntaxHighlighter>
-                        </div>
                       </div>
                     ) : (
-                      <div className="w-full" ref={postRef}>
                         <code
                           className="bg-zinc-700 text-white px-1 py-1 my-1 rounded text-wrap"
                           {...props}
                         >
                           {children}
                         </code>
-                      </div>
                     );
                   },
                 }}
