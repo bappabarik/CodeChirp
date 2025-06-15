@@ -34,9 +34,9 @@ const Tweets = () => {
             }
             // console.log(newPost);
         })
-        return () => {
-            dbService.unsubscribeToPost()
-        };
+        // return () => {
+        //     dbService.unsubscribeToPost()
+        // };
     }, [dispatch]);
 
     const fetchData = () => {

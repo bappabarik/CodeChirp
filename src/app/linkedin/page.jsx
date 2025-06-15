@@ -34,9 +34,9 @@ const LinkedIn = () => {
             }
             
         })
-        return () => {
-            dbService.unsubscribeToPost()
-        };
+        // return () => {
+        //     dbService.unsubscribeToPost()
+        // };
     }, [dispatch]);
 
 

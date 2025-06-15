@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const initialState = {
   status: false,
   userData: null,
-  installationStatus: false,
+  installationStatus: true,
   installationId: null,
   loading: true
 };
