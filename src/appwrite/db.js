@@ -79,6 +79,22 @@ export class DbService{
         }
     }
 
+    async updatePost(id, post){
+        try {
+            throw new Error("error");
+            
+            return await this.databases.updateDocument(
+                conf.appwriteDatabaseId,
+                conf.appwritePostCollectionId,
+                id,
+                post
+            )
+        } catch (error) {
+            console.log("Appwrite service :: getPosts :: error", error);
+            return false;
+        }
+    }
+
     subscribeToPosts(providerId, App, callback){
         this.postSubscription = this.client.subscribe(`databases.${conf.appwriteDatabaseId}.collections.${conf.appwritePostCollectionId}.documents`, response => {
             // console.log("Realtime Update:", response);

@@ -32,10 +32,13 @@ const postSlice = createSlice({
         },
         addPost: (state, action) => {
             state.posts.push(action.payload);
-        }
+        },
+        editPost: (state, action) => {            
+            state.posts = state.posts.map(post => post.$id === action.payload.$id ? action.payload : post);
+        },
     }
 })
 
-export const { addLinkedinPosts, prependLinkedinPosts, addXPosts, prependXPosts, addTotalLinkedinPosts, addTotalXPosts, addPost } = postSlice.actions;
+export const { addLinkedinPosts, prependLinkedinPosts, addXPosts, prependXPosts, addTotalLinkedinPosts, addTotalXPosts, addPost, editPost } = postSlice.actions;
 
 export default postSlice.reducer;

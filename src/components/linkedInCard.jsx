@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaLinkedinIn } from "react-icons/fa6";
 import CopyToClipboard from "./copyToClipboard";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { GoDownload } from "react-icons/go";
 import { MdEdit } from "react-icons/md";
+import dbService from "@/appwrite/db";
+import { editPost } from "@/store/postSlice";
+import { Toaster } from "./ui/sonner";
+import { toast } from "sonner";
 
 const LinkedInCard = ({ post, loading }) => {
   const userData = useSelector((state) => state.auth.userData);
@@ -14,18 +18,29 @@ const LinkedInCard = ({ post, loading }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [edited, setEdited] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
+  const dispatch = useDispatch();
 
   const handleBlur = () => {
     setIsEditing(false);
+    if (post?.content.trim() === content.trim()) {
+      return
+    }
+   const res = dbService.updatePost(post?.$id, { content: content });
+    toast.promise(res, {
+      loading: "Loading...",
+      success: () => {
+        dispatch(editPost({ ...post, content: content }));
+        return "Changes have been saved successfully";
+      },
+      error: "Failed to save changes",
+    });
   };
 
   useEffect(() => {
-    if (content !== '') {
+    if (content !== "") {
       content !== post.content ? setEdited(true) : setEdited(false);
     }
   }, [isEditing, content]);
-
-
 
   // Function to download code as a file
   const downloadAsFile = (text, language) => {
@@ -76,8 +91,9 @@ const LinkedInCard = ({ post, loading }) => {
             <FaLinkedinIn />
             <CopyToClipboard copyText={content} />
             <button
-            onClick={() => setIsEditing(true)}
-            className="p-2 dark:bg-neutral-800 bg-slate-50 hover:bg-slate-200 rounded-lg  dark:border-none border border-black">
+              onClick={() => setIsEditing(true)}
+              className="p-2 dark:bg-neutral-800 bg-slate-50 hover:bg-slate-200 rounded-lg  dark:border-none border border-black"
+            >
               <MdEdit />
             </button>
           </div>
@@ -93,9 +109,7 @@ const LinkedInCard = ({ post, loading }) => {
               onBlur={handleBlur}
             />
           ) : (
-            <div
-              className="h-full break-words"
-            >
+            <div className="h-full break-words">
               <ReactMarkdown
                 components={{
                   code({ node, inline, className, children, ...props }) {
@@ -113,40 +127,39 @@ const LinkedInCard = ({ post, loading }) => {
                           >
                             <GoDownload className="text-lg" />
                           </button>
-                        </div>
-                        {" "}
-                          <SyntaxHighlighter
-                            language={language}
-                            style={tomorrow}
-                            wrapLongLines={true}
-                            PreTag="div"
-                            customStyle={{
+                        </div>{" "}
+                        <SyntaxHighlighter
+                          language={language}
+                          style={tomorrow}
+                          wrapLongLines={true}
+                          PreTag="div"
+                          customStyle={{
+                            whiteSpace: "pre-wrap",
+                            wordBreak: "break-word",
+                            overflow: "visible",
+                            padding: "1rem",
+                            fontSize: "0.875rem",
+                            background: "black",
+                            borderRadius: "5px",
+                          }}
+                          codeTagProps={{
+                            style: {
                               whiteSpace: "pre-wrap",
                               wordBreak: "break-word",
-                              overflow: "visible",
-                              padding: "1rem",
-                              fontSize: "0.875rem",
-                              background: "black",
-                              borderRadius: "5px",
-                            }}
-                            codeTagProps={{
-                              style: {
-                                whiteSpace: "pre-wrap",
-                                wordBreak: "break-word",
-                              },
-                            }}
-                            {...props}
-                          >
-                            {codeText}
-                          </SyntaxHighlighter>
-                      </div>
-                    ) : (
-                        <code
-                          className="bg-zinc-700 text-white px-1 py-1 my-1 rounded text-wrap"
+                            },
+                          }}
                           {...props}
                         >
-                          {children}
-                        </code>
+                          {codeText}
+                        </SyntaxHighlighter>
+                      </div>
+                    ) : (
+                      <code
+                        className="bg-zinc-700 text-white px-1 py-1 my-1 rounded text-wrap"
+                        {...props}
+                      >
+                        {children}
+                      </code>
                     );
                   },
                 }}
@@ -183,9 +196,10 @@ const LinkedInCard = ({ post, loading }) => {
             src="https://static-exp1.licdn.com/sc/h/7fx9nkd7mx8avdpqm5hqcbi97"
             alt="Celebrate"
           />
-          <span>47 • 26 comments</span>
+          <span>4,721 • 126 comments</span>
         </div>
       </div>
+       <Toaster position="bottom-center" richColors closeButton />
     </div>
   );
 };

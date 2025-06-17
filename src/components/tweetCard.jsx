@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { BsTwitterX } from "react-icons/bs";
 import CopyToClipboard from "./copyToClipboard";
@@ -8,15 +8,31 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { GoDownload } from "react-icons/go";
 import { MdEdit } from "react-icons/md";
+import dbService from "@/appwrite/db";
+import { editPost } from "@/store/postSlice";
+import { Toaster } from "./ui/sonner";
+import { toast } from "sonner";
 
 const TweetCard = ({ post, loading }) => {
   const userData = useSelector((state) => state.auth.userData);
   const [content, setContent] = useState(post?.content || "");
   const [isEditing, setIsEditing] = useState(false);
-
+  const dispatch = useDispatch();
 
   const handleBlur = () => {
     setIsEditing(false);
+    if (post?.content.trim() === content.trim()) {
+      return;
+    }
+    const res = dbService.updatePost(post?.$id, { content: content });
+    toast.promise(res, {
+      loading: "Loading...",
+      success: () => {
+        dispatch(editPost({ ...post, content: content }));
+        return "Changes have been saved successfully";
+      },
+      error: "Failed to save changes",
+    });
   };
 
   // Function to download code as a file
@@ -58,8 +74,9 @@ const TweetCard = ({ post, loading }) => {
             <BsTwitterX className="text-neutral-700 dark:text-neutral-200" />
             <CopyToClipboard copyText={content} />
             <button
-            onClick={() => setIsEditing(true)}
-            className="p-2 dark:bg-neutral-800 bg-slate-50 hover:bg-slate-200 rounded-lg  dark:border-none border border-black">
+              onClick={() => setIsEditing(true)}
+              className="p-2 dark:bg-neutral-800 bg-slate-50 hover:bg-slate-200 rounded-lg  dark:border-none border border-black"
+            >
               <MdEdit />
             </button>
           </div>
@@ -76,9 +93,7 @@ const TweetCard = ({ post, loading }) => {
               onBlur={handleBlur}
             />
           ) : (
-            <div
-              className="cursor-pointer break-words overflow-wrap w-full text-sm sm:text-base"
-            >
+            <div className="cursor-pointer break-words overflow-wrap w-full text-sm sm:text-base">
               <ReactMarkdown
                 components={{
                   code({ node, inline, className, children, ...props }) {
@@ -96,9 +111,8 @@ const TweetCard = ({ post, loading }) => {
                           >
                             <GoDownload className="text-lg" />
                           </button>
-                        </div>
-                       {" "}
-                          <SyntaxHighlighter
+                        </div>{" "}
+                        <SyntaxHighlighter
                           language={language}
                           style={tomorrow}
                           wrapLongLines={true}
@@ -109,8 +123,8 @@ const TweetCard = ({ post, loading }) => {
                             overflow: "visible",
                             padding: "1rem",
                             fontSize: "0.875rem",
-                            background: "black",   
-                            borderRadius: "5px",   
+                            background: "black",
+                            borderRadius: "5px",
                           }}
                           codeTagProps={{
                             style: {
@@ -140,6 +154,7 @@ const TweetCard = ({ post, loading }) => {
           )}
         </div>
       </div>
+      <Toaster position="bottom-center" richColors closeButton />
     </div>
   );
 };
