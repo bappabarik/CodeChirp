@@ -81,7 +81,6 @@ export class DbService{
 
     async updatePost(id, post){
         try {
-            throw new Error("error");
             
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,

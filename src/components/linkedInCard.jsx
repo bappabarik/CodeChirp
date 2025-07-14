@@ -26,6 +26,7 @@ const LinkedInCard = ({ post, loading }) => {
       return
     }
    const res = dbService.updatePost(post?.$id, { content: content });
+
     toast.promise(res, {
       loading: "Loading...",
       success: () => {
@@ -54,7 +55,7 @@ const LinkedInCard = ({ post, loading }) => {
   };
 
   return (
-    <div className=" w-full h-full md:flex items-center justify-center md:mt-[30rem] mt-20">
+    <div className={`w-full h-full md:flex items-center justify-center ${isReadMore && 'md:mt-[34rem]'} mt-20`}>
       <div className=" bg-slate-50 dark:bg-neutral-900 border shadow px-5 py-4 rounded-lg max-w-full md:w-[40rem]">
         {/* User Info */}
         <div className="flex justify-between">

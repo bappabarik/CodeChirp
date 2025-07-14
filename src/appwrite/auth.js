@@ -18,8 +18,8 @@ export class AuthService {
         try {
             await this.account.createOAuth2Session(
                 OAuthProvider.Github, // provider
-                'http://localhost:5173/installation', // redirect here on success
-                'http://localhost:5173/login', // redirect here on failure
+                conf.callbackUrl, // redirect here on success
+                conf.failureUrl, // redirect here on failure
                 ['repo', 'user'] // scopes (optional)
             );
             
