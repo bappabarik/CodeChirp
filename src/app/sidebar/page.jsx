@@ -78,6 +78,10 @@ export function SidebarNavigationMenu() {
   const userData = useSelector(state => state.auth.userData)
   const installationStatus = useSelector(state => state.auth.installationStatus)
 
+  const onClick = () => {
+    setOpen(!open)
+  }
+
   return (
     <div
       className={cn(
@@ -103,7 +107,7 @@ export function SidebarNavigationMenu() {
         </a>}</div> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2 items-start">
               {links.map((link, idx) => (
-                <SidebarLink key={idx} link={link} />
+                <SidebarLink key={idx} link={link} onClick={onClick} />
               ))}
             </div>
           </div>
