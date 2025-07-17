@@ -11,6 +11,7 @@ import dbService from "@/appwrite/db";
 import { editPost } from "@/store/postSlice";
 import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
+import html2canvas from "html2canvas";
 
 const LinkedInCard = ({ post, loading }) => {
   const userData = useSelector((state) => state.auth.userData);
@@ -19,6 +20,26 @@ const LinkedInCard = ({ post, loading }) => {
   const [edited, setEdited] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
   const dispatch = useDispatch();
+  const snippetRef = useRef();
+
+  const handleDownload = async () => {
+    if (!snippetRef.current) return;
+
+    try {
+      const canvas = await html2canvas(snippetRef.current, {
+        scale: 4,
+        useCORS: true
+      });
+      const dataUrl = canvas.toDataURL('image/png');
+
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = 'snippet.png';
+      link.click();
+    } catch (err) {
+      console.error('Failed to capture element:', err);
+    }
+  };
 
   const handleBlur = () => {
     setIsEditing(false);
@@ -44,15 +65,15 @@ const LinkedInCard = ({ post, loading }) => {
   }, [isEditing, content]);
 
   // Function to download code as a file
-  const downloadAsFile = (text, language) => {
-    const element = document.createElement("a");
-    const file = new Blob([text], { type: "text/plain" });
-    element.href = URL.createObjectURL(file);
-    element.download = `code-snippet.${language || "txt"}`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-  };
+  // const downloadAsFile = (text, language) => {
+  //   const element = document.createElement("a");
+  //   const file = new Blob([text], { type: "text/plain" });
+  //   element.href = URL.createObjectURL(file);
+  //   element.download = `code-snippet.${language || "txt"}`;
+  //   document.body.appendChild(element);
+  //   element.click();
+  //   document.body.removeChild(element);
+  // };
 
   return (
     <div className={`w-full h-full md:flex items-center justify-center ${isReadMore && 'md:mt-[34rem]'} mt-20`}>
@@ -123,13 +144,14 @@ const LinkedInCard = ({ post, loading }) => {
                         <div className="absolute right-0 top-0 m-2 flex space-x-2 z-10">
                           <CopyToClipboard copyText={codeText} />
                           <button
-                            onClick={() => downloadAsFile(codeText, language)}
+                            onClick={handleDownload}
                             className="dark:bg-neutral-800 bg-slate-50 hover:bg-slate-200 rounded-lg px-2 py-1 dark:border-none border border-black"
                           >
                             <GoDownload className="text-lg" />
                           </button>
                         </div>{" "}
                         <SyntaxHighlighter
+                          ref={snippetRef}
                           language={language}
                           style={tomorrow}
                           wrapLongLines={true}
