@@ -22,8 +22,6 @@ export class AuthService {
                 conf.failureUrl, // redirect here on failure
                 ['repo', 'user'] // scopes (optional)
             );
-            
-            return this.account.getSession('current')
 
         } catch (error) {
             console.log("AuthService :: Login :: ", error);
@@ -31,23 +29,30 @@ export class AuthService {
         }
     }
 
-    async getCurrentUser(){
-        try {
-            const pref = await this.account.getPrefs()
-            if (!pref.avatar) {
-                const session = await this.account.getSession('current')
-                const avatarURL = `https://avatars.githubusercontent.com/u/${session.providerUid}`
-                await this.account.updatePrefs({'avatar': avatarURL})
-            }
-            const session = await this.account.getSession('current')
-            const user = await this.account.get()
-            user.targets[0].providerId = session.providerUid
-            return user
-            
-        } catch (error) {
-            console.log("AuthService :: getCurrentUser :: ", error); 
+async getCurrentUser() {
+    try {
+        // Check if session exists
+        const session = await this.account.getSession('current');
+
+        // Get user prefs and update avatar if needed
+        const pref = await this.account.getPrefs();
+        if (!pref.avatar && session.providerUid) {
+            const avatarURL = `https://avatars.githubusercontent.com/u/${session.providerUid}`;
+            await this.account.updatePrefs({ avatar: avatarURL });
         }
+
+        const user = await this.account.get();
+        if (user.targets && user.targets[0]) {
+            user.targets[0].providerId = session.providerUid;
+        }
+
+        return user;
+    } catch (error) {
+        console.log("AuthService :: getCurrentUser :: ", error);
+        return null;
     }
+}
+
 
     async logout(){
         try {

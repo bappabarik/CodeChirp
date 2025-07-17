@@ -14,37 +14,39 @@ const Installation = () => {
   const navigate = useNavigate()
   const userData = useSelector(state => state.auth.userData)
   const installationStatus = useSelector(state => state.auth.installationStatus)
-  const loading = useSelector(state => state.auth.loading)
+  // const loading = useSelector(state => state.auth.loading)
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch()
 
-
-    useEffect(() => {
-      // console.log(loading);
-      dispatch(fetchInstallation());
-      // console.log(loading);
-      
-      if (userData && !installationStatus) {        
+  function delayInstallationLoad(){
+    if (userData && !installationStatus) {        
           if (installationID) {
           dbService.storeGithubAppData(userData.targets[0].providerId, {installationID})
           .then(data => {
             if (data) {
-              console.log(response);
               navigate("/dashboard")
+              setLoading(false)
             } else {
               navigate("/dashboard")
-
+              setLoading(false)
             }
           })
           .catch(error => {
             console.log(error);
             navigate("/dashboard")
+            setLoading(false)
           } )
-        } else {
-          console.log("second else...")
         }
       } else {
         navigate("/dashboard")
     }
+  }
+    useEffect(() => {
+      dispatch(fetchInstallation());
+      setTimeout(() => {
+        delayInstallationLoad()
+      }, 2500);
+      
     }, [installationStatus, dispatch]);
 
     return (
