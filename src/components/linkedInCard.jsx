@@ -28,25 +28,25 @@ const LinkedInCard = ({ post, loading }) => {
     try {
       const canvas = await html2canvas(snippetRef.current, {
         scale: 4,
-        useCORS: true
+        useCORS: true,
       });
-      const dataUrl = canvas.toDataURL('image/png');
+      const dataUrl = canvas.toDataURL("image/png");
 
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = dataUrl;
-      link.download = 'snippet.png';
+      link.download = "snippet.png";
       link.click();
     } catch (err) {
-      console.error('Failed to capture element:', err);
+      console.error("Failed to capture element:", err);
     }
   };
 
   const handleBlur = () => {
     setIsEditing(false);
     if (post?.content.trim() === content.trim()) {
-      return
+      return;
     }
-   const res = dbService.updatePost(post?.$id, { content: content });
+    const res = dbService.updatePost(post?.$id, { content: content });
 
     toast.promise(res, {
       loading: "Loading...",
@@ -76,7 +76,11 @@ const LinkedInCard = ({ post, loading }) => {
   // };
 
   return (
-    <div className={`w-full h-full md:flex items-center justify-center ${isReadMore && 'md:mt-[34rem]'} mt-20`}>
+    <div
+      className={`w-full h-full md:flex items-center justify-center ${
+        isReadMore && "md:mt-[34rem]"
+      } mt-20`}
+    >
       <div className=" bg-slate-50 dark:bg-neutral-900 border shadow px-5 py-4 rounded-lg max-w-full md:w-[40rem]">
         {/* User Info */}
         <div className="flex justify-between">
@@ -150,31 +154,33 @@ const LinkedInCard = ({ post, loading }) => {
                             <GoDownload className="text-lg" />
                           </button>
                         </div>{" "}
-                        <SyntaxHighlighter
-                          ref={snippetRef}
-                          language={language}
-                          style={tomorrow}
-                          wrapLongLines={true}
-                          PreTag="div"
-                          customStyle={{
-                            whiteSpace: "pre-wrap",
-                            wordBreak: "break-word",
-                            overflow: "visible",
-                            padding: "1rem",
-                            fontSize: "0.875rem",
-                            background: "black",
-                            borderRadius: "5px",
-                          }}
-                          codeTagProps={{
-                            style: {
+                        <div ref={snippetRef} className=" p-8 bg-white">
+                          <SyntaxHighlighter
+                            language={language}
+                            style={tomorrow}
+                            wrapLongLines={true}
+                            PreTag="div"
+                            customStyle={{
                               whiteSpace: "pre-wrap",
                               wordBreak: "break-word",
-                            },
-                          }}
-                          {...props}
-                        >
-                          {codeText}
-                        </SyntaxHighlighter>
+                              overflow: "visible",
+                              padding: "1rem",
+                              fontSize: "0.875rem",
+                              background: "black",
+                              borderRadius: "5px",
+                              boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
+                            }}
+                            codeTagProps={{
+                              style: {
+                                whiteSpace: "pre-wrap",
+                                wordBreak: "break-word",
+                              },
+                            }}
+                            {...props}
+                          >
+                            {codeText}
+                          </SyntaxHighlighter>
+                        </div>
                       </div>
                     ) : (
                       <code
@@ -222,7 +228,7 @@ const LinkedInCard = ({ post, loading }) => {
           <span>4,721 • 126 comments</span>
         </div>
       </div>
-       <Toaster position="bottom-center" richColors closeButton />
+      <Toaster position="bottom-center" richColors closeButton />
     </div>
   );
 };

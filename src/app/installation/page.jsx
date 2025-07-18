@@ -36,6 +36,8 @@ const Installation = () => {
             navigate("/dashboard")
             setLoading(false)
           } )
+        } else {
+          setLoading(false)
         }
       } else {
         navigate("/dashboard")
