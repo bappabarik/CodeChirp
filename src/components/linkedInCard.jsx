@@ -81,7 +81,7 @@ const LinkedInCard = ({ post, loading }) => {
         isReadMore && "md:mt-[34rem]"
       } mt-20`}
     >
-      <div className=" bg-slate-50 dark:bg-neutral-900 border shadow px-5 py-4 rounded-lg max-w-full md:w-[40rem]">
+      <div className=" bg-slate-50 dark:bg-neutral-900 border shadow px-5 py-4 rounded-lg max-w-full md:w-[40rem] md:mb-40 mb-[34rem]">
         {/* User Info */}
         <div className="flex justify-between">
           <div className="flex items-center space-x-3">
@@ -154,7 +154,7 @@ const LinkedInCard = ({ post, loading }) => {
                             <GoDownload className="text-lg" />
                           </button>
                         </div>{" "}
-                        <div ref={snippetRef} className=" p-8 bg-white">
+                        <div ref={snippetRef} className=" p-5 bg-white">
                           <SyntaxHighlighter
                             language={language}
                             style={tomorrow}
@@ -227,6 +227,9 @@ const LinkedInCard = ({ post, loading }) => {
           />
           <span>4,721 • 126 comments</span>
         </div>
+      </div>
+      <div className="fixed h-16 w-full md:w-[40rem] bottom-0 md:mb-5 bg-slate-50 dark:bg-neutral-900 right-0 border shadow px-5 py-4 md:rounded-lg">
+
       </div>
       <Toaster position="bottom-center" richColors closeButton />
     </div>

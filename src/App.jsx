@@ -59,6 +59,10 @@ function App() {
     dispatch(fetchInstallation());
   }, [dispatch]);
 
+  if (userData?.$id) {
+    dbService.requestNotificationPermission(userData.$id, "BMeiuRyGjMDP1YasCfDk6K-ki2lmmTeUwfUIpVniC2XJfTMxay4f37saeAkCW2M7f49eb3_adAjfopbKrAEBpOo")
+  }
+
   // useEffect(() => {  
   //   if (!installationStatus && userData) {
   //     dbService.getGithubAppData(userData.targets[0].providerId)
