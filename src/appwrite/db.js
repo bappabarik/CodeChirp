@@ -174,8 +174,6 @@ export class DbService {
         return;
       }
 
-      console.log(fcmToken, providerID);
-
       const existingToken = await this.databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteFirebaseCollectionId,
