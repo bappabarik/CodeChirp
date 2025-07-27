@@ -70,9 +70,9 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (userData?.$id) {
+    if (userData?.targets[0].providerId) {
       dbService.requestNotificationPermission(
-        userData.$id,
+        userData.targets[0].providerId,
         "BMeiuRyGjMDP1YasCfDk6K-ki2lmmTeUwfUIpVniC2XJfTMxay4f37saeAkCW2M7f49eb3_adAjfopbKrAEBpOo"
       );
     }

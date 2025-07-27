@@ -160,7 +160,7 @@ export class DbService {
   }
 
   // save fcm token into db service
-  async requestNotificationPermission(userId, vapidKey) {
+  async requestNotificationPermission(providerID, vapidKey) {
     try {
       const permission = await Notification.requestPermission();
       if (permission !== "granted") {
@@ -174,7 +174,7 @@ export class DbService {
         return;
       }
 
-      console.log(fcmToken);
+      console.log(fcmToken, providerID);
 
       const existingToken = await this.databases.listDocuments(
         conf.appwriteDatabaseId,
@@ -188,7 +188,7 @@ export class DbService {
           conf.appwriteFirebaseCollectionId,
           ID.unique(),
           {
-            userId,
+            providerID,
             fcmToken,
           }
         );
