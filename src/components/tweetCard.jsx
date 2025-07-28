@@ -20,23 +20,23 @@ const TweetCard = ({ post, loading }) => {
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useDispatch();
   const snippetRef = useRef();
-  
+
   const handleDownload = async () => {
     if (!snippetRef.current) return;
 
     try {
       const canvas = await html2canvas(snippetRef.current, {
         scale: 4,
-        useCORS: true
+        useCORS: true,
       });
-      const dataUrl = canvas.toDataURL('image/png');
+      const dataUrl = canvas.toDataURL("image/png");
 
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = dataUrl;
-      link.download = 'snippet.png';
+      link.download = "snippet.png";
       link.click();
     } catch (err) {
-      console.error('Failed to capture element:', err);
+      console.error("Failed to capture element:", err);
     }
   };
 
@@ -133,31 +133,33 @@ const TweetCard = ({ post, loading }) => {
                             <GoDownload className="text-lg" />
                           </button>
                         </div>{" "}
-                        <SyntaxHighlighter
-                          ref={snippetRef}
-                          language={language}
-                          style={tomorrow}
-                          wrapLongLines={true}
-                          PreTag="div"
-                          customStyle={{
-                            whiteSpace: "pre-wrap",
-                            wordBreak: "break-word",
-                            overflow: "visible",
-                            padding: "1rem",
-                            fontSize: "0.875rem",
-                            background: "black",
-                            borderRadius: "5px",
-                          }}
-                          codeTagProps={{
-                            style: {
+                        <div ref={snippetRef} className=" p-5 bg-white">
+                          <SyntaxHighlighter
+                            ref={snippetRef}
+                            language={language}
+                            style={tomorrow}
+                            wrapLongLines={true}
+                            PreTag="div"
+                            customStyle={{
                               whiteSpace: "pre-wrap",
                               wordBreak: "break-word",
-                            },
-                          }}
-                          {...props}
-                        >
-                          {codeText}
-                        </SyntaxHighlighter>
+                              overflow: "visible",
+                              padding: "1rem",
+                              fontSize: "0.875rem",
+                              background: "black",
+                              borderRadius: "5px",
+                            }}
+                            codeTagProps={{
+                              style: {
+                                whiteSpace: "pre-wrap",
+                                wordBreak: "break-word",
+                              },
+                            }}
+                            {...props}
+                          >
+                            {codeText}
+                          </SyntaxHighlighter>
+                        </div>
                       </div>
                     ) : (
                       <code
