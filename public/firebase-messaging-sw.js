@@ -13,7 +13,7 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  console.log(payload);
+  console.log("payload::", payload);
   
   
   const { title, body, click_action } = payload.data;
