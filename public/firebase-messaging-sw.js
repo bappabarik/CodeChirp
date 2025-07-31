@@ -14,7 +14,7 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
   
-  const { title, body, click_action } = payload.notification;
+  const { title, body, click_action } = payload.data;
 
   self.registration.showNotification(title, {
     body,
