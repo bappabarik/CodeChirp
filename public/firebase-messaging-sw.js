@@ -13,6 +13,8 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
+  console.log(payload);
+  
   
   const { title, body, click_action } = payload.data;
 
@@ -23,7 +25,3 @@ messaging.onBackgroundMessage((payload) => {
   });
 });
 
-// self.addEventListener('notificationclick', event => {
-//   event.notification.close();
-//   event.waitUntil(clients.openWindow(event.notification.data.url))
-// })
