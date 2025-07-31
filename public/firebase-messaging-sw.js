@@ -13,12 +13,17 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  console.log(payload);
   
-  const { title, body } = payload.notification;
+  const { title, body, click_action } = payload.notification;
 
   self.registration.showNotification(title, {
     body,
-    icon: "/CodeChirp.png", // optional
+    icon: "/CodeChirp.png",
+    data: { url: click_action }
   });
 });
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  event.waitUntil(clients.openWindow(event.notification.data.url))
+})
