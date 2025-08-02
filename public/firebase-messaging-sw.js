@@ -28,7 +28,6 @@ messaging.onBackgroundMessage((payload) => {
   });
 
   self.addEventListener("notificationclick", (event) => {
-    // Close the notification once it's clicked
     event.notification.close();
 
     // Get the URL we stored in the 'data' property when we created the notification
