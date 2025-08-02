@@ -33,7 +33,6 @@ messaging.onBackgroundMessage((payload) => {
     // Get the URL we stored in the 'data' property when we created the notification
     const urlToOpen = event.notification.data.url;
 
-    console.log("Notification clicked! Opening URL:", urlToOpen);
 
     // Prevent the browser from immediately closing the Service Worker while we do our work
     event.waitUntil(
